@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Главная страница
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Учебный год
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#">2020</a>
+        <a class="dropdown-item" href="#">2021</a>
+        <a class="dropdown-item" href="#">2022</a>
+      </div>
+
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" checked="">
+            <label class="btn btn-outline-primary" for="btnradio4">Семестр 1</label>
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off" checked="">
+            <label class="btn btn-outline-primary" for="btnradio5">Семестр 2</label>
+        </div>
+    </div>
+
+
+    <table class="grades-table table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Дисциплина</th>
+            <th scope="col">Оценка</th>
+            <th scope="col">Дата</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Физическая культура</th>
+            <td>5</td>
+            <td>10.01.2021</td>
+          </tr>
+        </tbody>
+      </table>
+
+</div>
+{% endblock %}
