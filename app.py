@@ -45,6 +45,14 @@ try:
                                     course SMALLINT)'''
             cur.execute(create_table)
 
+            create_table = ''' CREATE TABLE IF NOT EXISTS group_disciplines (
+                                    id SERIAL PRIMARY KEY,
+                                    academic_year SMALLINT,
+                                    semester SMALLINT,
+                                    discipline_id INTEGER REFERENCES disciplines(id),
+                                    group_id INTEGER REFERENCES groups(id))'''
+            cur.execute(create_table)
+
             create_table = ''' CREATE TABLE IF NOT EXISTS users (
                                     id SERIAL PRIMARY KEY,
                                     login VARCHAR(128) UNIQUE NOT NULL,
@@ -78,6 +86,8 @@ try:
                                     id SERIAL PRIMARY KEY,
                                     grade SMALLINT,
                                     datetime DATE,
+                                    academic_year SMALLINT,
+                                    semester SMALLINT,
                                     student_id INTEGER REFERENCES students(id),
                                     teacher_id INTEGER REFERENCES teachers(id),
                                     discipline_id INTEGER  REFERENCES disciplines(id))'''
@@ -98,14 +108,13 @@ try:
                              ('st2', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 1,),
                              ('st3', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 1,),
                              ('st4', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 1,),
-                             ('tch1', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 1,),
-                             ('tch2', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 1,),
-                             ('tch3', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 1,),
-                             ('tch4', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 1,),
-                             ('tch5', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 1,),]
+                             ('tch1', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 2,),
+                             ('tch2', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 2,),
+                             ('tch3', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 2,),
+                             ('tch4', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 2,),
+                             ('tch5', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 2,),]
             for record in insert_values:
                 cur.execute(insert_script, record)
-            print('hello')
 
             insert_script = 'INSERT INTO students (id, last_name, first_name, patronymic, group_id, admission_date) ' \
                             'VALUES (%s, %s, %s, %s, %s, %s)'
@@ -147,18 +156,25 @@ try:
             for record in insert_values:
                 cur.execute(insert_script, record)
 
+            insert_script = 'INSERT INTO group_disciplines (academic_year, semester, discipline_id, group_id) ' \
+                            'VALUES (%s, %s, %s, %s)'
+            insert_values = [(2020, 2, 6, 1,), (2021, 1, 7, 1,), (2020, 2, 1, 2,), (2020, 2, 6, 2,), (2020, 1, 7, 2,),
+                             (2021, 2, 5, 2,), (2020, 2, 7, 2,), (2020, 2, 4, 2,), (2021, 1, 5, 3,)]
+            for record in insert_values:
+                cur.execute(insert_script, record)
+
             insert_script = 'INSERT INTO grades ' \
-                            '(student_id, teacher_id, discipline_id, grade, datetime) ' \
-                            'VALUES (%s, %s, %s, %s, %s)'
-            insert_values = [(1, 6, 6, 5, '2021-06-29',),
-                             (1, 6, 7, 4, '2022-01-18',),
-                             (2, 5, 1, 5, '2021-07-01',),
-                             (2, 6, 6, 4, '2021-06-30',),
-                             (2, 6, 7, 4, '2021-01-18',),
-                             (2, 9, 5, 4, '2022-07-03',),
-                             (2, 6, 7, 3, '2021-07-02',),
-                             (3, 8, 4, 5, '2021-07-02',),
-                             (4, 9, 5, 5, '2022-01-15',)]
+                            '(student_id, teacher_id, discipline_id, grade, datetime, academic_year, semester) ' \
+                            'VALUES (%s, %s, %s, %s, %s, %s, %s)'
+            insert_values = [(1, 6, 6, 5, '2021-06-29', 2020, 2,),
+                             (1, 6, 7, 4, '2022-01-18', 2021, 1,),
+                             (2, 5, 1, 5, '2021-07-01', 2020, 2,),
+                             (2, 6, 6, 4, '2021-06-30', 2020, 2,),
+                             (2, 6, 7, 4, '2021-01-18', 2020, 1,),
+                             (2, 9, 5, 4, '2022-07-03', 2021, 2,),
+                             (2, 6, 7, 3, '2021-07-02', 2020, 2,),
+                             (3, 8, 4, 5, '2021-07-02', 2020, 2,),
+                             (4, 9, 5, 5, '2022-01-15', 2021, 1)]
             for record in insert_values:
                 cur.execute(insert_script, record)
 

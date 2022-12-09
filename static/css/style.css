@@ -6,7 +6,8 @@ header {
     margin-top: 30px;
 }
 
-.grades-table {
-    margin-top: 50px;
+.grade-date {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
-

@@ -15,3 +15,12 @@ def testfn():
     if request.method == 'POST':
         print(request.get_json())  # parse as JSON
         return 'Sucesss', 200
+
+
+@profile.route('/discipline-groups')
+def get_discipline_groups():
+    # GET request
+    if request.method == 'GET':
+        print(f"request from user {session['user_id']}")
+        data = {'groups': [132, 123, 321]}
+        return jsonify(data)

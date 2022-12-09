@@ -30,4 +30,9 @@ def login_post():
         return redirect(url_for('auth.login'))
 
     session["user_id"] = user.id
-    return redirect(url_for('main.profile'))
+
+    if user.role == 1:
+        return redirect(url_for('main.profile'))
+
+    if user.role == 2:
+        return redirect(url_for('main.teacher_profile'))

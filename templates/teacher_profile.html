@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Главная страница
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Поставить оценку</h1>
+    <form method="POST" class="col-6">
+        <fieldset>
+          <div class="form-group">
+              <label for="exampleSelect1" class="form-label mt-4">Выбор дисциплины</label>
+              <select class="form-select" id="exampleSelect1" onchange="disciplineSelected();">
+                <option id="select1">1</option>
+                <option id="select2">2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="exampleSelect1" class="form-label mt-4">Выбор группы</label>
+              <select class="form-select" id="exampleSelect2">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="exampleSelect1" class="form-label mt-4">Выбор студента</label>
+              <select class="form-select" id="exampleSelect3">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+          </div>
+
+          <div class="grade-date">
+              <div class="form-group col-3">
+                  <label for="exampleSelect1" class="form-label mt-4">Год</label>
+                  <select class="form-select" id="exampleSelect4">
+                    <option>2020</option>
+                    <option>2021</option>
+                    <option>2022</option>
+                  </select>
+              </div>
+
+              <div class="form-group col-3">
+                  <label for="exampleSelect1" class="form-label mt-4">Семестр</label>
+                  <select class="form-select" id="exampleSelect5">
+                    <option>1</option>
+                    <option>2</option>
+                  </select>
+              </div>
+
+              <div class="form-group col-3">
+                  <label for="exampleSelect1" class="form-label mt-4">Оценка</label>
+                  <select class="form-select" id="exampleSelect6">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+              </div>
+          </div>
+
+
+
+          <button type="submit" class="login-btn btn btn-primary btn-lg col-12">Далее</button>
+        </fieldset>
+      </form>
+
+
+</div>
+{% endblock %}
