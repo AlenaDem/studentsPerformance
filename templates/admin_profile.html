@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Главная страница
+{% endblock %}
+
+{% block body %}
+
+<ul class="nav flex-column">
+    <li class="nav-item">
+        <a class="nav-link active" href="#">Учителя</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onClick="loadStudents()">Студенты</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Специальности</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Дисциплины</a>
+    </li>
+</ul>
+
+<div class="container col-8" id="view">
+</div>
+
+<script src="{{ url_for('static', filename='js/manager_profile.js') }}"></script>
+
+{% endblock %}

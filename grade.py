@@ -18,7 +18,8 @@ class Grade:
     def get_grades(student_id):
         db = open_db()
         try:
-            db.cursor.execute('SELECT disciplines.discipline_name, grades.grade, grades.datetime, grades.semester '
+            db.cursor.execute('SELECT disciplines.discipline_name, '
+                              'grades.grade, grades.datetime, grades.semester, grades.academic_year '
                               'FROM grades '
                               'JOIN disciplines ON grades.discipline_id = disciplines.id '
                               'WHERE grades.student_id = %s', (student_id,))

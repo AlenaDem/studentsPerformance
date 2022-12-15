@@ -5,79 +5,74 @@
 {% endblock %}
 
 {% block body %}
-<div class="container">
+<div class="teacher-profile d-flex justify-content-start">
+    <div class="container col-4 set-grade-container">
     <h1>Поставить оценку</h1>
-    <form method="POST" class="col-6">
+    <form method="POST" class="col-11">
         <fieldset>
-          <div class="form-group">
-              <label for="exampleSelect1" class="form-label mt-4">Выбор дисциплины</label>
-              <select class="form-select" id="exampleSelect1" onchange="disciplineSelected();">
-                <option id="select1">1</option>
-                <option id="select2">2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
-          </div>
-
-          <div class="form-group">
-              <label for="exampleSelect1" class="form-label mt-4">Выбор группы</label>
-              <select class="form-select" id="exampleSelect2">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
-          </div>
-
-          <div class="form-group">
-              <label for="exampleSelect1" class="form-label mt-4">Выбор студента</label>
-              <select class="form-select" id="exampleSelect3">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
-          </div>
-
-          <div class="grade-date">
-              <div class="form-group col-3">
-                  <label for="exampleSelect1" class="form-label mt-4">Год</label>
-                  <select class="form-select" id="exampleSelect4">
-                    <option>2020</option>
-                    <option>2021</option>
-                    <option>2022</option>
-                  </select>
+            <div class="grade-date">
+              <div class="form-group col-4">
+                  <div class="form-group">
+                      <label class="col-form-label mt-4" for="input-year">Год</label>
+                      <input type="number" class="form-control" placeholder="Введите год" id="input-year"
+                             value="2020" min="2000" max="2022" required>
+                  </div>
               </div>
 
-              <div class="form-group col-3">
-                  <label for="exampleSelect1" class="form-label mt-4">Семестр</label>
-                  <select class="form-select" id="exampleSelect5">
+              <div class="form-group col-4">
+                  <label for="select-semester" class="form-label mt-4">Семестр</label>
+                  <select class="form-select" id="select-semester">
                     <option>1</option>
                     <option>2</option>
                   </select>
               </div>
 
-              <div class="form-group col-3">
-                  <label for="exampleSelect1" class="form-label mt-4">Оценка</label>
-                  <select class="form-select" id="exampleSelect6">
+              <button id="year-selected-btn" type="button" class="login-btn btn btn-primary">Далее</button>
+            </div>
+
+          <div class="form-group" id="discipline-form">
+              <label for="discipline-select" class="form-label mt-4">Выбор дисциплины</label>
+              <select class="form-select" id="discipline-select">
+                <option>1</option>
+              </select>
+          </div>
+
+          <div class="form-group" id="group-form">
+              <label for="group-select" class="form-label mt-4">Выбор группы</label>
+              <select class="form-select" id="group-select">
+                <option>1</option>
+              </select>
+          </div>
+
+          <div class="form-group" id="student-form">
+              <label for="student-select" class="form-label mt-4">Выбор студента</label>
+              <select class="form-select" id="student-select">
+                <option>1</option>
+              </select>
+          </div>
+
+              <div class="form-group" id="grade-form">
+                  <label for="grade-select" class="form-label mt-4">Оценка</label>
+                  <select class="form-select" id="grade-select">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
                     <option>4</option>
                     <option>5</option>
                   </select>
+
+                  <button id="grade-btn" type="button" class="login-btn btn btn-primary btn-lg col-12">Поставить оценку</button>
               </div>
-          </div>
 
 
-
-          <button type="submit" class="login-btn btn btn-primary btn-lg col-12">Далее</button>
         </fieldset>
       </form>
+    </div>
 
+    <div class="container col-8" id="group-grades">
+        <h1>Группа</h1>
+    </div>
 
 </div>
+
 {% endblock %}

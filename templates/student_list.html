@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<table class="student-table table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Имя</th>
+        <th scope="col">Группа</th>
+        <th scope="col">Год поступления</th>
+        <th scope="col">Редактирование</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for s in data %}
+        <tr>
+        <td>{{ s['name'] }}</td>
+        <td>{{ s['group'] }}</td>
+        <td>{{ s['date'] }}</td>
+        <td>
+            <button type="button" id="edit-{{ s['id'] }}" onclick="openStudent({{ s['id'] }})">Изменить</button>
+            <button type="button" id="delete-{{ s['id'] }}" onclick="deleteStudent({{ s['id'] }})">Удалить</button>
+        </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+  </table>

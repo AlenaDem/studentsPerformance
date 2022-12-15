@@ -39,18 +39,11 @@ try:
                                     speciality_id INTEGER REFERENCES specialities(id))'''
             cur.execute(create_table)
 
-            create_table = ''' CREATE TABLE IF NOT EXISTS groups (
+            create_table = ''' CREATE TABLE IF NOT EXISTS st_groups (
                                     id SERIAL PRIMARY KEY,
                                     speciality_id INTEGER REFERENCES specialities(id),
-                                    course SMALLINT)'''
-            cur.execute(create_table)
-
-            create_table = ''' CREATE TABLE IF NOT EXISTS group_disciplines (
-                                    id SERIAL PRIMARY KEY,
-                                    academic_year SMALLINT,
-                                    semester SMALLINT,
-                                    discipline_id INTEGER REFERENCES disciplines(id),
-                                    group_id INTEGER REFERENCES groups(id))'''
+                                    course SMALLINT,
+                                    group_name VARCHAR(32))'''
             cur.execute(create_table)
 
             create_table = ''' CREATE TABLE IF NOT EXISTS users (
@@ -66,7 +59,7 @@ try:
                                     last_name VARCHAR(64) NOT NULL,
                                     patronymic VARCHAR(64),
                                     admission_date SMALLINT,
-                                    group_id INTEGER REFERENCES groups(id))'''
+                                    group_id INTEGER REFERENCES st_groups(id))'''
             cur.execute(create_table)
 
             create_table = ''' CREATE TABLE IF NOT EXISTS teachers (
@@ -76,16 +69,19 @@ try:
                                     patronymic VARCHAR(64))'''
             cur.execute(create_table)
 
-            create_table = ''' CREATE TABLE IF NOT EXISTS tch_disciplines (
+            create_table = ''' CREATE TABLE IF NOT EXISTS group_disciplines (
                                     id SERIAL PRIMARY KEY,
+                                    academic_year SMALLINT,
+                                    semester SMALLINT,
+                                    discipline_id INTEGER REFERENCES disciplines(id),
                                     teacher_id INTEGER REFERENCES teachers(id),
-                                    discipline_id INTEGER REFERENCES disciplines(id))'''
+                                    group_id INTEGER REFERENCES st_groups(id))'''
             cur.execute(create_table)
 
             create_table = ''' CREATE TABLE IF NOT EXISTS grades (
                                     id SERIAL PRIMARY KEY,
                                     grade SMALLINT,
-                                    datetime DATE,
+                                    datetime DATE NOT NULL DEFAULT CURRENT_DATE,
                                     academic_year SMALLINT,
                                     semester SMALLINT,
                                     student_id INTEGER REFERENCES students(id),
@@ -98,8 +94,8 @@ try:
             for record in insert_values:
                 cur.execute(insert_script, record)
 
-            insert_script = 'INSERT INTO groups (speciality_id, course) VALUES (%s, %s)'
-            insert_values = [(1, 3,), (1, 4,), (2, 4,)]
+            insert_script = 'INSERT INTO st_groups (speciality_id, course, group_name) VALUES (%s, %s, %s)'
+            insert_values = [(1, 3, 'ИБС-31'), (1, 4, 'ИБС-41'), (2, 4, 'ИФБС-41')]
             for record in insert_values:
                 cur.execute(insert_script, record)
 
@@ -112,7 +108,8 @@ try:
                              ('tch2', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 2,),
                              ('tch3', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 2,),
                              ('tch4', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 2,),
-                             ('tch5', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 2,),]
+                             ('tch5', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 2,),
+                             ('root', 'df293094f3944b28571ab6e3de56237289a36ccccb38ee049ccc0f2838d0735a', 3,),]
             for record in insert_values:
                 cur.execute(insert_script, record)
 
@@ -151,15 +148,12 @@ try:
             for record in insert_values:
                 cur.execute(insert_script, record)
 
-            insert_script = 'INSERT INTO tch_disciplines (teacher_id, discipline_id) VALUES (%s, %s)'
-            insert_values = [(5, 1,), (5, 2,), (5, 8,), (6, 6), (6, 7), (7, 3,), (8, 4,), (9, 5,)]
-            for record in insert_values:
-                cur.execute(insert_script, record)
-
-            insert_script = 'INSERT INTO group_disciplines (academic_year, semester, discipline_id, group_id) ' \
-                            'VALUES (%s, %s, %s, %s)'
-            insert_values = [(2020, 2, 6, 1,), (2021, 1, 7, 1,), (2020, 2, 1, 2,), (2020, 2, 6, 2,), (2020, 1, 7, 2,),
-                             (2021, 2, 5, 2,), (2020, 2, 7, 2,), (2020, 2, 4, 2,), (2021, 1, 5, 3,)]
+            insert_script = 'INSERT INTO group_disciplines ' \
+                            '(academic_year, semester, teacher_id, discipline_id, group_id) ' \
+                            'VALUES (%s, %s, %s, %s, %s)'
+            insert_values = [(2020, 2, 6, 6, 1,), (2021, 1, 6, 7, 1,), (2020, 2, 5, 1, 2,),
+                             (2020, 2, 6, 6, 2,), (2020, 1, 6, 7, 2,), (2021, 2, 9, 5, 2,),
+                             (2020, 2, 6, 7, 2,), (2020, 2, 8, 4, 2,), (2021, 1, 9, 5, 3,)]
             for record in insert_values:
                 cur.execute(insert_script, record)
 

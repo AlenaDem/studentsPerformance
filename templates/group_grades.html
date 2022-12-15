@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="container">
+  <div id="accordion">
+
+    {% for student, infos in group_grades|dictsort %}
+    {% set idx = loop.index %}
+
+    <div class="card">
+      <div class="card-header" id="heading{{ idx }}">
+        <h5 class="mb-0">
+          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" id="btn{{ idx }}" autocomplete="off" data-toggle="collapse"
+              data-target="#collapse{{ idx }}" aria-expanded="true" aria-controls="collapse{{ idx }}">
+            <label class="btn btn-primary" for="btn{{ idx }}">{{ student }}</label>
+          </div>
+        </h5>
+      </div>
+
+      <div id="collapse{{ idx }}" class="collapse" aria-labelledby="heading{{ idx }}" data-parent="#accordion">
+        <table class="grades-table table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Оценка</th>
+              <th scope="col">Дата</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for info in infos %}
+            <tr>
+              <td>{{ info['grade'] }}</td>
+              <td>{{ info['date'] }}</td>
+            </tr>
+            {% endfor %}
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {% endfor %}
+
+  </div>
+</div>

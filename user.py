@@ -2,6 +2,13 @@ import psycopg2
 import psycopg2.extras
 
 from db import open_db
+from enum import IntEnum
+
+
+class Role(IntEnum):
+    Student = 1
+    Teacher = 2
+    Admin = 3
 
 
 class User:

@@ -1,19 +1,17 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, session
-import hashlib
-from user import User
+from helpers import hash_password
+from user import User, Role
+from validators import valid_session
 
 auth = Blueprint('auth', __name__)
-salt = "8gwe"
 
 
 @auth.route('/login')
 def login():
-    return render_template('login.html')
+    if valid_session(session):
+        return redirect(url_for('main.index'))
 
-def hash_password(password):
-    password = password + salt
-    password = hashlib.sha256(password.encode()).hexdigest()
-    return password
+    return render_template('login.html')
 
 
 @auth.route('/login', methods=['POST'])
@@ -30,9 +28,22 @@ def login_post():
         return redirect(url_for('auth.login'))
 
     session["user_id"] = user.id
+    session["user_role"] = user.role
 
-    if user.role == 1:
+    if user.role == Role.Student:
         return redirect(url_for('main.profile'))
 
-    if user.role == 2:
+    if user.role == Role.Teacher:
         return redirect(url_for('main.teacher_profile'))
+
+    return redirect(url_for('main.index'))
+
+
+@auth.route('/logout', methods=['GET'])
+def logout():
+    if not valid_session(session):
+        return redirect(url_for('auth.login'))
+
+    session.pop("user_id")
+    session.pop("user_role")
+    return redirect(url_for('auth.login'))

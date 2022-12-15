@@ -10,4 +10,42 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: flex-end
+}
+
+#discipline-form {
+    display: none;
+}
+
+#group-form {
+    display: None;
+}
+
+#student-form {
+    display: None;
+}
+
+#grade-form {
+    display: None;
+}
+
+#grade-btn {
+    display: None;
+}
+
+.teacher-profile {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    margin: 0 100px 0 100px;
+}
+
+.set-grade-container {
+    margin-left: 0 !important;
+}
+
+.admin-menu-container {
+    display: flex;
+    flex-direction: row;
 }
