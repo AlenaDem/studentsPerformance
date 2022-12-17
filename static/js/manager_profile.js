@@ -92,7 +92,7 @@ function editStudent(id) {
             method: "POST",
             body: JSON.stringify(data)
         })
-        .then(function (res) { 
+        .then(function (res) {
             if (res.ok)
                 res.text().then(msg => setSuccess(msg))
             else
@@ -104,16 +104,16 @@ function editStudent(id) {
 
 function openStudentForCreate() {
     fetch("/create_student_form",
-    {
-        method: "GET"
-    })
-    .then(function (response) {
-        return response.text();
-    })
-    .then(function (html) {
-        let view = document.getElementById("view")
-        view.innerHTML = html
-    });
+        {
+            method: "GET"
+        })
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+        });
 }
 
 function createStudent() {
@@ -145,7 +145,7 @@ function createStudent() {
             method: "POST",
             body: JSON.stringify(data)
         })
-        .then(function (res) { 
+        .then(function (res) {
             if (res.ok)
                 res.text().then(msg => setSuccess(msg))
             else
@@ -160,9 +160,13 @@ function deleteStudent(id) {
         {
             method: "DELETE"
         })
-        .then(function (response) {
-            if (response.status == 200)
-                loadStudents()
+        .then(function (res) {
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
+            loadStudents()
         })
 }
 
@@ -229,7 +233,7 @@ function editTeacher(id) {
             method: "POST",
             body: JSON.stringify(data)
         })
-        .then(function (res) { 
+        .then(function (res) {
             if (res.ok)
                 res.text().then(msg => setSuccess(msg))
             else
@@ -241,16 +245,16 @@ function editTeacher(id) {
 
 function openTeacherForCreate() {
     fetch("/create_teacher_form",
-    {
-        method: "GET"
-    })
-    .then(function (response) {
-        return response.text();
-    })
-    .then(function (html) {
-        let view = document.getElementById("view")
-        view.innerHTML = html
-    });
+        {
+            method: "GET"
+        })
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+        });
 }
 
 function createTeacher() {
@@ -278,7 +282,7 @@ function createTeacher() {
             method: "POST",
             body: JSON.stringify(data)
         })
-        .then(function (res) { 
+        .then(function (res) {
             if (res.ok)
                 res.text().then(msg => setSuccess(msg))
             else
@@ -347,7 +351,7 @@ function editSpeciality(id) {
             method: "POST",
             body: JSON.stringify(data)
         })
-        .then(function (res) { 
+        .then(function (res) {
             if (res.ok)
                 res.text().then(msg => setSuccess(msg))
             else
@@ -359,16 +363,16 @@ function editSpeciality(id) {
 
 function openSpecialityForCreate() {
     fetch("/create_speciality_form",
-    {
-        method: "GET"
-    })
-    .then(function (response) {
-        return response.text();
-    })
-    .then(function (html) {
-        let view = document.getElementById("view")
-        view.innerHTML = html
-    });
+        {
+            method: "GET"
+        })
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+        });
 }
 
 function createSpeciality() {
@@ -387,7 +391,7 @@ function createSpeciality() {
             method: "POST",
             body: JSON.stringify(data)
         })
-        .then(function (res) { 
+        .then(function (res) {
             if (res.ok)
                 res.text().then(msg => setSuccess(msg))
             else
@@ -456,7 +460,7 @@ function editDiscipline(id) {
             method: "POST",
             body: JSON.stringify(data)
         })
-        .then(function (res) { 
+        .then(function (res) {
             if (res.ok)
                 res.text().then(msg => setSuccess(msg))
             else
@@ -468,16 +472,16 @@ function editDiscipline(id) {
 
 function openDisciplineForCreate() {
     fetch("/create_discipline_form",
-    {
-        method: "GET"
-    })
-    .then(function (response) {
-        return response.text();
-    })
-    .then(function (html) {
-        let view = document.getElementById("view")
-        view.innerHTML = html
-    });
+        {
+            method: "GET"
+        })
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+        });
 }
 
 function createDiscipline() {
@@ -503,5 +507,122 @@ function createDiscipline() {
                 res.text().then(msg => setError(msg))
 
             loadDisciplines()
+        })
+}
+
+
+//
+// Группы
+//
+function loadGroups() {
+    hideStatus()
+
+    let url = '/group_list'
+    fetch(url)
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+
+            $('.table').DataTable({
+                paging: false,
+                info: false,
+                "language": {
+                    "emptyTable": "Группы не найдены",
+                    "search": "Поиск:",
+                    "zeroRecords": "Нет результатов, удовлетворяющих запросу",
+                }
+            });
+        });
+}
+
+function openGroupForEdit(id) {
+    fetch("/edit_group_form/" + id,
+        {
+            method: "GET"
+        })
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+        });
+}
+
+function editGroup(id) {
+    let form = document.getElementById('edit-form')
+    if (!form.checkValidity())
+        return
+
+    let name = document.getElementById('name-input').value
+    let course = document.getElementById('course-input').value
+    let specId = document.getElementById('spec-select').value
+
+    const data = {
+        id: id,
+        name: name,
+        course: course,
+        spec_id: specId
+    }
+
+    fetch("/edit_group",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(function (res) {
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
+            loadGroups()
+        })
+}
+
+function openGroupForCreate() {
+    fetch("/create_group_form",
+        {
+            method: "GET"
+        })
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+        });
+}
+
+function createGroup() {
+    let form = document.getElementById('edit-form')
+    if (!form.checkValidity())
+        return
+
+    let name = document.getElementById('name-input').value
+    let course = document.getElementById('course-input').value
+    let specId = document.getElementById('spec-select').value
+
+    const data = {
+        name: name,
+        course: course,
+        spec_id: specId
+    }
+
+    fetch("/create_group",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(function (res) {
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
+            loadGroups()
         })
 }

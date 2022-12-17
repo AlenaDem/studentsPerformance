@@ -6,25 +6,33 @@
 
 {% block body %}
 
-<ul class="nav flex-column">
-    <li class="nav-item">
-        <a class="nav-link" href="#" onClick="loadSpecialities()">Специальности</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#" onClick="loadDisciplines()">Дисциплины</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" href="#" onClick="loadTeachers()">Преподаватели</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#" onClick="loadStudents()">Студенты</a>
-    </li>
-</ul>
-
-<div id="status-holder">
-</div>
-
-<div class="container col-8" id="view">
+<div class="row">
+    <div class="col-2">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#" onClick="loadSpecialities()">Специальности</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onClick="loadDisciplines()">Дисциплины</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#" onClick="loadTeachers()">Преподаватели</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onClick="loadGroups()">Группы</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onClick="loadStudents()">Студенты</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-10">
+        <div id="status-holder">
+        </div>
+    
+        <div class="container" id="view">
+        </div>
+    </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/manager_profile.js') }}"></script>

@@ -11,7 +11,8 @@ from validators import valid_session, valid_args
 
 manager_profile = Blueprint('manager_profile', __name__)
 
-######################### STUDENTS #################################
+
+######################### students #################################
 
 @manager_profile.route('/student_list', methods=['GET'])
 def student_list():
@@ -45,19 +46,19 @@ def edit_student_form(student_id):
 
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     student = Student.get(student_id)
     if student is None:
-        return '', 404
+        return 'Студент не найден', 404
 
     user = User.get(student_id)
     if user is None:
-        return '', 404
+        return 'Пользователь не найден', 404
 
     groups = Group.get_all()
     if groups is None or len(groups) == 0:
-        return '', 404
+        return 'Группы не найдены', 404
 
     return render_template('student_edit.html', student=student, user=user, groups=groups)
 
@@ -69,11 +70,11 @@ def edit_student():
 
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     data = request.get_json(force=True)
     if not valid_args(data, 'id', 'first_name', 'last_name', 'group_id', 'patronymic', 'year'):
-        return '', 500
+        return 'Некорректные данные', 500
 
     if not Student.update(id=data['id'],
                           first_name=data['first_name'],
@@ -81,9 +82,9 @@ def edit_student():
                           patronymic=data['patronymic'],
                           group_id=data['group_id'],
                           admission_date=data['year']):
-        return '', 500
+        return 'Не удалось обновить студента', 500
 
-    return '', 200
+    return 'Студент обновлен', 200
 
 
 @manager_profile.route('/create_student_form', methods=['GET'])
@@ -94,11 +95,11 @@ def create_student_form():
     user_id = session['user_id']
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     groups = Group.get_all()
     if groups is None or len(groups) == 0:
-        return '', 404
+        return 'Группы не найдены', 404
 
     empty_student = Student(0)
     empty_student.group_id = groups[0].id
@@ -115,11 +116,11 @@ def create_student():
 
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     data = request.get_json(force=True)
     if not valid_args(data, 'first_name', 'last_name', 'group_id', 'login', 'password', 'patronymic', 'year'):
-        return '', 500
+        return 'Некорректные данные', 500
 
     ok = Student.create(login=data["login"],
                         password=hash_password(data['password']),
@@ -130,9 +131,9 @@ def create_student():
                         group_id=data['group_id'])
 
     if not ok:
-        return '', 500
+        return 'Не удалось создать студента', 500
 
-    return '', 200
+    return 'Студент создан', 200
 
 
 @manager_profile.route('/delete_student/<student_id>', methods=['DELETE'])
@@ -143,17 +144,17 @@ def delete_student(student_id):
     user_id = session['user_id']
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     print(f'Delete student {student_id}')
 
     if not Student.delete(student_id):
-        return '', 500
+        return 'Не удалось удалить студента', 500
 
-    return '', 200
+    return 'Студент удален', 200
 
 
-######################### TEACHERS #################################
+######################### teachers #################################
 
 @manager_profile.route('/teacher_list', methods=['GET'])
 def teacher_list():
@@ -183,15 +184,15 @@ def edit_teacher_form(id):
 
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     t = Teacher.get(id)
     if t is None:
-        return '', 404
+        return 'Преподаватель не найден', 404
 
     user = User.get(id)
     if user is None:
-        return '', 404
+        return 'Пользователь не найден', 404
 
     return render_template('teacher_edit.html', teacher=t, user=user)
 
@@ -203,20 +204,20 @@ def edit_teacher():
 
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     data = request.get_json(force=True)
     if not valid_args(data, 'id', 'first_name', 'last_name', 'patronymic'):
-        return '', 500
+        return 'Некорректные данные', 500
 
     if not Teacher.update(id=data['id'],
                           first_name=data['first_name'],
                           last_name=data['last_name'],
                           patronymic=data['patronymic']
                           ):
-        return '', 500
+        return 'Не удалось обновить преподавателя', 500
 
-    return '', 200
+    return 'Преподаватель обновлен', 200
 
 
 @manager_profile.route('/create_teacher_form', methods=['GET'])
@@ -227,7 +228,7 @@ def create_teacher_form():
     user_id = session['user_id']
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     empty_teacher = Teacher(0)
     empty_user = User(0)
@@ -241,11 +242,11 @@ def create_teacher():
 
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     data = request.get_json(force=True)
     if not valid_args(data, 'first_name', 'last_name', 'patronymic', 'login', 'password'):
-        return '', 500
+        return 'Некорректные данные', 500
 
     ok = Teacher.create(login=data["login"],
                         password=hash_password(data['password']),
@@ -255,9 +256,9 @@ def create_teacher():
                         )
 
     if not ok:
-        return '', 500
+        return 'Не удалось создать преподавателя', 500
 
-    return '', 200
+    return 'Преподаватель создан', 200
 
 
 ######################### specialities #################################
@@ -287,11 +288,11 @@ def edit_speciality_form(id):
 
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     item = Speciality.get(id)
     if item is None:
-        return '', 404
+        return 'Специальность не найдена', 404
 
     return render_template('speciality_edit.html', item=item)
 
@@ -303,16 +304,16 @@ def edit_speciality():
 
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     data = request.get_json(force=True)
     if not valid_args(data, 'id', 'name'):
-        return '', 500
+        return 'Некорректные данные', 500
 
     if not Speciality.update(id=data['id'], name=data['name']):
-        return '', 500
+        return 'Не удалось обновить специальность', 500
 
-    return '', 200
+    return 'Специальность обновлена', 200
 
 
 @manager_profile.route('/create_speciality_form', methods=['GET'])
@@ -323,7 +324,7 @@ def create_speciality_form():
     user_id = session['user_id']
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     empty_item = Speciality(0)
     return render_template('speciality_edit.html', item=empty_item)
@@ -336,17 +337,17 @@ def create_speciality():
 
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     data = request.get_json(force=True)
     if not valid_args(data, 'name'):
-        return '', 500
+        return 'Некорректные данные', 500
 
     ok = Speciality.create(name=data["name"])
     if not ok:
-        return '', 500
+        return 'Не удалось создать специальность', 500
 
-    return '', 200
+    return 'Специальность создана', 200
 
 
 ######################### disciplines #################################
@@ -376,11 +377,11 @@ def edit_discipline_form(id):
 
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     item = Discipline.get(id)
     if item is None:
-        return '', 404
+        return 'Дисциплина не найдена', 404
 
     return render_template('discipline_edit.html', item=item)
 
@@ -392,16 +393,16 @@ def edit_discipline():
 
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     data = request.get_json(force=True)
     if not valid_args(data, 'id', 'name'):
-        return '', 500
+        return 'Некорректные данные', 500
 
     if not Discipline.update(id=data['id'], name=data['name']):
-        return '', 500
+        return 'Не удалось обновить дисциплину', 500
 
-    return '', 200
+    return 'Дисциплина обновлена', 200
 
 
 @manager_profile.route('/create_discipline_form', methods=['GET'])
@@ -412,7 +413,7 @@ def create_discipline_form():
     user_id = session['user_id']
     user_role = session['user_role']
     if user_role != Role.Admin:
-        return '', 403
+        return 'Недостаточно прав', 403
 
     empty_item = Discipline(0)
     return render_template('discipline_edit.html', item=empty_item)
@@ -435,4 +436,117 @@ def create_discipline():
     if not ok:
         return 'Ну удалось создать дисциплину', 500
 
-    return 'Новая дисциплина создана!', 200
+    return 'Дисциплина создана', 200
+
+
+######################### groups #################################
+
+@manager_profile.route('/group_list', methods=['GET'])
+def group_list():
+    if not valid_session(session):
+        return redirect(url_for('auth.login'))
+
+    user_id = session['user_id']
+    user_role = session['user_role']
+    if user_role != Role.Admin:
+        return redirect(url_for('main.index'))
+
+    items = Group.get_all()
+    data = []
+    for item in items:
+        speciality = Speciality.get(item.speciality_id)
+        speciality_name = "-" if speciality is None else speciality.speciality_name
+        data.append({'id': item.id,
+                     'name': item.group_name,
+                     'speciality_id': item.speciality_id,
+                     'speciality': speciality_name,
+                     'course': item.course
+                     })
+
+    return render_template('group_list.html', items=data)
+
+
+@manager_profile.route('/edit_group_form/<id>', methods=['GET'])
+def edit_group_form(id):
+    if not valid_session(session):
+        return redirect(url_for('auth.login'))
+
+    user_role = session['user_role']
+    if user_role != Role.Admin:
+        return 'Недостаточно прав', 403
+
+    group = Group.get(id)
+    if group is None:
+        return 'Группа не найдена', 404
+
+    speciality_list = Speciality.get_all()
+    if speciality_list is None or len(speciality_list) == 0:
+        return 'Специальности не найдены', 404
+
+    return render_template('group_edit.html', group=group, specs=speciality_list)
+
+
+@manager_profile.route('/edit_group', methods=['POST'])
+def edit_group():
+    if not valid_session(session):
+        return redirect(url_for('auth.login'))
+
+    user_role = session['user_role']
+    if user_role != Role.Admin:
+        return 'Недостаточно прав', 403
+
+    data = request.get_json(force=True)
+    if not valid_args(data, 'id', 'name', 'spec_id', 'course'):
+        return 'Некорректные данные', 500
+
+    if not Group.update(id=data['id'],
+                        spec_id=data['spec_id'],
+                        name=data['name'],
+                        course=data['course']
+                        ):
+        return 'Не удалось обновить группу', 500
+
+    return 'Группа обновлена', 200
+
+
+@manager_profile.route('/create_group_form', methods=['GET'])
+def create_group_form():
+    if not valid_session(session):
+        return redirect(url_for('auth.login'))
+
+    user_id = session['user_id']
+    user_role = session['user_role']
+    if user_role != Role.Admin:
+        return 'Недостаточно прав', 403
+
+    speciality_list = Speciality.get_all()
+    if speciality_list is None or len(speciality_list) == 0:
+        return 'Специальности не найдены', 404
+
+    empty_group = Group(0)
+    empty_group.speciality_id = speciality_list[0].id
+
+    return render_template('group_edit.html', group=empty_group, specs=speciality_list)
+
+
+@manager_profile.route('/create_group', methods=['POST'])
+def create_group():
+    if not valid_session(session):
+        return redirect(url_for('auth.login'))
+
+    user_role = session['user_role']
+    if user_role != Role.Admin:
+        return 'Недостаточно прав', 403
+
+    data = request.get_json(force=True)
+    if not valid_args(data, 'name', 'spec_id', 'course'):
+        return 'Некорректные данные', 500
+
+    ok = Group.create(spec_id=data['spec_id'],
+                      name=data['name'],
+                      course=data['course'])
+
+    if not ok:
+        return 'Не удалось создать группу', 500
+
+    return 'Группа создана', 200

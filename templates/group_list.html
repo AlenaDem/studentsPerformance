@@ -1,0 +1,27 @@
+
+
+<h1>Группы</h1>
+
+<button type="button" id="create-btn" onclick="openGroupForCreate()">Создать</button>
+<table class="group-table table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Имя</th>
+        <th scope="col">Cпециальность</th>
+        <th scope="col">Курс</th>
+        <th scope="col">Редактирование</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+        <tr>
+        <td>{{ item['name'] }}</td>
+        <td>{{ item['speciality'] }}</td>
+        <td>{{ item['course'] }}</td>
+        <td>
+            <button type="button" id="edit-{{ item['id'] }}" onclick="openGroupForEdit({{ item['id'] }})">Изменить</button>
+        </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+  </table>

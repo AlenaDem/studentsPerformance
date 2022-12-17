@@ -2,7 +2,7 @@ from db import open_db
 
 
 class Group:
-    def __init__(self, id, speciality_id, course, group_name):
+    def __init__(self, id, speciality_id=None, course=None, group_name=""):
         self.id = id
         self.speciality_id = speciality_id
         self.course = course
@@ -27,6 +27,43 @@ class Group:
             db.close()
 
         return None
+
+    @staticmethod
+    def create(spec_id, course, name):
+        db = open_db()
+
+        try:
+            script = 'INSERT INTO st_groups (speciality_id, course, group_name) VALUES (%s, %s, %s)'
+            values = (spec_id, course, name)
+            db.cursor.execute(script, values)
+            db.conn.commit()
+            return True
+
+        except Exception as error:
+            print(error)
+
+        finally:
+            db.close()
+
+        return False
+
+    @staticmethod
+    def update(id, spec_id, course, name):
+        db = open_db()
+        try:
+            script = 'UPDATE st_groups SET speciality_id=%s, course=%s, group_name=%s  WHERE id=%s'
+            values = (spec_id, course, name, id)
+            db.cursor.execute(script, values)
+            db.conn.commit()
+            return True
+
+        except Exception as error:
+            print(error)
+
+        finally:
+            db.close()
+
+        return False
 
     @staticmethod
     def get_all():
