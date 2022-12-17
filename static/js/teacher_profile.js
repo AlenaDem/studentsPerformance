@@ -25,7 +25,29 @@ function hideAll() {
     document.getElementById("group-grades").style.display = "none";
 }
 
+function validateYear(inputID) {
+    const input = document.getElementById(inputID);
+    const validityState = input.validity;
+  
+    if (validityState.valueMissing) {
+      input.setCustomValidity('Пожалуйста, заполните год');
+    } else if (validityState.rangeUnderflow) {
+      input.setCustomValidity('Введите год от 2000');
+    } else if (validityState.rangeOverflow) {
+      input.setCustomValidity('Введите год до 2022');
+    } else {
+      input.setCustomValidity('');
+    }
+  
+    input.reportValidity();
+  }
+
 function dateSelected() {
+    let form = document.getElementById('edit-form')
+    if (!form.checkValidity()) {
+        form.reportValidity()
+        return
+    }
     hideAll();
     profile_state.year = document.getElementById("input-year").value;
     semesterElement = document.getElementById("select-semester");
