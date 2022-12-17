@@ -1,7 +1,7 @@
 
 <h1>Преподаватели</h1>
 
-<button type="button" id="create-btn" onclick="openTeacherForCreate()">Создать</button>
+<button class="btn btn-primary mt-4" type="button" id="create-btn" onclick="openTeacherForCreate()">Создать</button>
 <table class="teacher-table table table-bordered">
     <thead>
       <tr>
@@ -15,7 +15,7 @@
         <tr>
         <td>{{ teacher['name'] }}</td>
         <td>
-            <button type="button" id="edit-{{ teacher['id'] }}" onclick="openTeacherForEdit({{ teacher['id'] }})">Изменить</button>
+            <button class="btn btn-primary" type="button" id="edit-{{ teacher['id'] }}" onclick="openTeacherForEdit({{ teacher['id'] }})">Изменить</button>
         </td>
         </tr>
     {% endfor %}

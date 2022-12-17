@@ -2,7 +2,7 @@ from db import open_db
 
 
 class Group:
-    def __init__(self, id, speciality_id=None, course=None, group_name=""):
+    def __init__(self, id, speciality_id=None, course=1, group_name=""):
         self.id = id
         self.speciality_id = speciality_id
         self.course = course

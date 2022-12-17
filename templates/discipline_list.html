@@ -1,7 +1,7 @@
 
 <h1>Дисциплины</h1>
 
-<button type="button" id="create-btn" onclick="openDisciplineForCreate()">Создать</button>
+<button class="btn btn-primary mt-4" type="button" id="create-btn" onclick="openDisciplineForCreate()">Создать</button>
 <table class="discipline-table table table-bordered">
     <thead>
       <tr>
@@ -15,7 +15,7 @@
         <tr>
         <td>{{ item['name'] }}</td>
         <td>
-            <button type="button" id="edit-{{ item['id'] }}" onclick="openDisciplineForEdit({{ item['id'] }})">Изменить</button>
+            <button class="btn btn-primary" type="button" id="edit-{{ item['id'] }}" onclick="openDisciplineForEdit({{ item['id'] }})">Изменить</button>
         </td>
         </tr>
     {% endfor %}

@@ -1,36 +1,42 @@
-<form id="edit-form">
+<form id="edit-form" class="col-10">
   <fieldset>
-    <button type="button" class="btn btn-primary" onclick="loadTeachers()">Назад</button>
+    <button type="button" class="btn btn-primary mb-4 col-2" onclick="loadTeachers()">Назад</button>
 
     {# user.id == 0 значит создание нового учителя, отображаем поля логин и пароль #}
     {% if user.id == 0 %}
-    <div class="form-group">
+    <div class="form-group mt-4">
       <label for="login-input">Логин</label>
       <input type="text" class="form-control" name="login" id="login-input" value="{{ user.login }}">
     </div>
-    <div class="form-group">
+    <div class="form-group mt-4">
       <label for="pass-input">Пароль</label>
       <input type="password" class="form-control" name="password" id="pass-input">
     </div>
     {% endif %} 
 
-    <div class="form-group">
+    <div class="form-group mt-4">
       <label for="first-name-input">Имя</label>
-      <input type="text" class="form-control" name="first_name" id="first-name-input" value="{{ teacher.first_name }}">
+      <input type="text" class="form-control" name="first_name" id="first-name-input" value="{{ teacher.first_name }}"
+             placeholder="Введите имя"  minlength="1" maxlength="64" required="" 
+             oninvalid="this.setCustomValidity('Пожалуйста, введите корректное имя')" oninput="setCustomValidity('')">
     </div>
-    <div class="form-group">
+    <div class="form-group mt-4">
       <label for="last-name-input">Фамилия</label>
-      <input type="text" class="form-control" name="last_name" id="last-name-input" value="{{ teacher.last_name }}">
+      <input type="text" class="form-control" name="last_name" id="last-name-input" value="{{ teacher.last_name }}"
+             placeholder="Введите фамилию"  minlength="1" maxlength="64" required="" 
+             oninvalid="this.setCustomValidity('Пожалуйста, введите корректную фамилию')" oninput="setCustomValidity('')">
     </div>
-    <div class="form-group">
+    <div class="form-group mt-4">
       <label for="patronymic-input">Отчество</label>
-      <input type="text" class="form-control" name="patronymic" id="patronymic-input" value="{{ teacher.patronymic }}">
+      <input type="text" class="form-control" name="patronymic" id="patronymic-input" value="{{ teacher.patronymic }}"
+             placeholder="Введите отчество"  minlength="1" maxlength="64" required="" 
+             oninvalid="this.setCustomValidity('Пожалуйста, введите корректное отчество')" oninput="setCustomValidity('')">
     </div>
 
     {% if user.id == 0 %}
-      <button type="button" class="btn btn-primary" id="ok-button" onclick="createTeacher()">ОК</button>
+      <button type="button" class="btn btn-primary mt-4 col-2" id="ok-button" onclick="createTeacher()">ОК</button>
     {% else %}
-      <button type="button" class="btn btn-primary" id="ok-button" onclick="editTeacher({{ user.id }})">ОК</button>
+      <button type="button" class="btn btn-primary mt-4 col-2" id="ok-button" onclick="editTeacher({{ user.id }})">ОК</button>
     {% endif %} 
 
   </fieldset>

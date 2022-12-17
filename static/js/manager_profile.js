@@ -69,8 +69,10 @@ function openStudentForEdit(id) {
 
 function editStudent(id) {
     let form = document.getElementById('edit-form')
-    if (!form.checkValidity())
+    if (!form.checkValidity()) {
+        form.reportValidity()
         return
+    }
 
     let fn = document.getElementById('first-name-input').value
     let ln = document.getElementById('last-name-input').value
@@ -118,8 +120,10 @@ function openStudentForCreate() {
 
 function createStudent() {
     let form = document.getElementById('edit-form')
-    if (!form.checkValidity())
+    if (!form.checkValidity()) {
+        form.reportValidity()
         return
+    }
 
     let fn = document.getElementById('first-name-input').value
     let ln = document.getElementById('last-name-input').value
@@ -214,8 +218,10 @@ function openTeacherForEdit(id) {
 
 function editTeacher(id) {
     let form = document.getElementById('edit-form')
-    if (!form.checkValidity())
+    if (!form.checkValidity()) {
+        form.reportValidity()
         return
+    }
 
     let fn = document.getElementById('first-name-input').value
     let ln = document.getElementById('last-name-input').value
@@ -259,8 +265,10 @@ function openTeacherForCreate() {
 
 function createTeacher() {
     let form = document.getElementById('edit-form')
-    if (!form.checkValidity())
+    if (!form.checkValidity()) {
+        form.reportValidity()
         return
+    }
 
     let fn = document.getElementById('first-name-input').value
     let ln = document.getElementById('last-name-input').value
@@ -336,8 +344,10 @@ function openSpecialityForEdit(id) {
 
 function editSpeciality(id) {
     let form = document.getElementById('edit-form')
-    if (!form.checkValidity())
+    if (!form.checkValidity()) {
+        form.reportValidity()
         return
+    }
 
     let name = document.getElementById('name-input').value
 
@@ -377,8 +387,10 @@ function openSpecialityForCreate() {
 
 function createSpeciality() {
     let form = document.getElementById('edit-form')
-    if (!form.checkValidity())
+    if (!form.checkValidity()) {
+        form.reportValidity()
         return
+    }
 
     let name = document.getElementById('name-input').value
 
@@ -445,8 +457,10 @@ function openDisciplineForEdit(id) {
 
 function editDiscipline(id) {
     let form = document.getElementById('edit-form')
-    if (!form.checkValidity())
+    if (!form.checkValidity()) {
+        form.reportValidity()
         return
+    }
 
     let name = document.getElementById('name-input').value
 
@@ -486,8 +500,10 @@ function openDisciplineForCreate() {
 
 function createDiscipline() {
     let form = document.getElementById('edit-form')
-    if (!form.checkValidity())
+    if (!form.checkValidity()) {
+        form.reportValidity()
         return
+    }
 
     let name = document.getElementById('name-input').value
 
@@ -554,8 +570,10 @@ function openGroupForEdit(id) {
 
 function editGroup(id) {
     let form = document.getElementById('edit-form')
-    if (!form.checkValidity())
+    if (!form.checkValidity()) {
+        form.reportValidity()
         return
+    }
 
     let name = document.getElementById('name-input').value
     let course = document.getElementById('course-input').value
@@ -599,8 +617,10 @@ function openGroupForCreate() {
 
 function createGroup() {
     let form = document.getElementById('edit-form')
-    if (!form.checkValidity())
+    if (!form.checkValidity()) {
+        form.reportValidity()
         return
+    }
 
     let name = document.getElementById('name-input').value
     let course = document.getElementById('course-input').value

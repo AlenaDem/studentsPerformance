@@ -1,7 +1,7 @@
 
 <h1>Специальности</h1>
 
-<button type="button" id="create-btn" onclick="openSpecialityForCreate()">Создать</button>
+<button class="btn btn-primary mt-4" type="button" id="create-btn" onclick="openSpecialityForCreate()">Создать</button>
 <table class="speciality-table table table-bordered">
     <thead>
       <tr>
@@ -15,7 +15,7 @@
         <tr>
         <td>{{ item['name'] }}</td>
         <td>
-            <button type="button" id="edit-{{ item['id'] }}" onclick="openSpecialityForEdit({{ item['id'] }})">Изменить</button>
+            <button class="btn btn-primary" type="button" id="edit-{{ item['id'] }}" onclick="openSpecialityForEdit({{ item['id'] }})">Изменить</button>
         </td>
         </tr>
     {% endfor %}

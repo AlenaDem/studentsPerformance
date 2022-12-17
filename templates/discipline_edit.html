@@ -1,16 +1,18 @@
-<form id="edit-form">
+<form id="edit-form" class="col-10">
   <fieldset>
-    <button type="button" class="btn btn-primary" onclick="loadDisciplines()">Назад</button>
+    <button type="button" class="btn btn-primary mb-4 col-2" onclick="loadDisciplines()">Назад</button>
 
-    <div class="form-group">
+    <div class="form-group mt-4">
       <label for="name-input">Название</label>
-      <input type="text" class="form-control" name="first_name" id="name-input" value="{{ item.discipline_name }}">
+      <input type="text" class="form-control" name="first_name" id="name-input" value="{{ item.discipline_name }}" 
+             placeholder="Введите название дисциплины" minlength="1" maxlength="64" required="" 
+             oninvalid="this.setCustomValidity('Пожалуйста, введите название дисциплины')" oninput="setCustomValidity('')">
     </div>
 
     {% if item.id == 0 %}
-      <button type="button" class="btn btn-primary" id="ok-button" onclick="createDiscipline()">ОК</button>
+      <button type="button" class="btn btn-primary mt-4 col-2" id="ok-button" onclick="createDiscipline()">ОК</button>
     {% else %}
-      <button type="button" class="btn btn-primary" id="ok-button" onclick="editDiscipline({{ item.id }})">ОК</button>
+      <button type="button" class="btn btn-primary mt-4 col-2" id="ok-button" onclick="editDiscipline({{ item.id }})">ОК</button>
     {% endif %} 
 
   </fieldset>

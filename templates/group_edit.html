@@ -1,19 +1,25 @@
-<form id="edit-form">
+<form id="edit-form" class="col-10">
   <fieldset>
-    <button type="button" class="btn btn-primary" onclick="loadGroups()">Назад</button>
+    <button type="button" class="btn btn-primary mb-4 col-2" onclick="loadGroups()">Назад</button>
 
-    <div class="form-group">
-      <label for="name-input">Имя</label>
-      <input type="text" class="form-control" name="name" id="name-input" value="{{ group.group_name }}">
+    <div class="form-group mt-4">
+      <label for="name-input">Название группы</label>
+      <input type="text" name="name" class="form-control" id="name-input" value="{{ group.group_name }}" 
+             placeholder="Введите название группы" minlength="1" maxlength="32" required="" 
+             oninvalid="this.setCustomValidity('Пожалуйста, введите название группы')" oninput="setCustomValidity('')">
+
     </div>
 
-    <div class="form-group">
+    <div class="form-group mt-4">
       <label for="course-input">Курс</label>
-      <input type="number" class="form-control" name="course" id="course-input" value="{{ group.course }}">
+      <input type="number" class="form-control" name="course" placeholder="Введите курс" id="course-input" value="{{ group.course }}"
+                             value="1" min="1" max="8" required="" 
+                             oninvalid="this.setCustomValidity('Пожалуйста, введите корректное значение курса')" 
+                             oninput="setCustomValidity('')">
     </div>
 
     <div class="form-group">
-      <label for="spec-select" class="form-label mt-4">Группа</label>
+      <label for="spec-select" class="form-label mt-4">Специальность</label>
       <select class="form-select" id="spec-select">
 
         {% for spec in specs %}
@@ -28,9 +34,9 @@
     </div>
 
     {% if group.id == 0 %}
-      <button type="button" class="btn btn-primary" id="ok-button" onclick="createGroup()">ОК</button>
+      <button type="button" class="btn btn-primary mt-4 col-2" id="ok-button" onclick="createGroup()">ОК</button>
     {% else %}
-      <button type="button" class="btn btn-primary" id="ok-button" onclick="editGroup({{ group.id }})">ОК</button>
+      <button type="button" class="btn btn-primary mt-4 col-2" id="ok-button" onclick="editGroup({{ group.id }})">ОК</button>
     {% endif %} 
 
   </fieldset>

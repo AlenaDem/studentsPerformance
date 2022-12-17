@@ -2,7 +2,7 @@
 
 <h1>Группы</h1>
 
-<button type="button" id="create-btn" onclick="openGroupForCreate()">Создать</button>
+<button class="btn btn-primary mt-4" type="button" id="create-btn" onclick="openGroupForCreate()">Создать</button>
 <table class="group-table table table-bordered">
     <thead>
       <tr>
@@ -19,7 +19,7 @@
         <td>{{ item['speciality'] }}</td>
         <td>{{ item['course'] }}</td>
         <td>
-            <button type="button" id="edit-{{ item['id'] }}" onclick="openGroupForEdit({{ item['id'] }})">Изменить</button>
+            <button class="btn btn-primary" type="button" id="edit-{{ item['id'] }}" onclick="openGroupForEdit({{ item['id'] }})">Изменить</button>
         </td>
         </tr>
     {% endfor %}
