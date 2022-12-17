@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, session
 from helpers import hash_password
-from user import User, Role
+from models.user import User, Role
 from validators import valid_session
 
 auth = Blueprint('auth', __name__)
@@ -21,7 +21,7 @@ def login_post():
     password = hash_password(password)
     print(password)
 
-    user = User.get_user(login)
+    user = User.get_by_login(login)
 
     if user is None or user.password != password:
         flash('Логин или пароль неверны, попробуйте снова.')
@@ -35,6 +35,9 @@ def login_post():
 
     if user.role == Role.Teacher:
         return redirect(url_for('main.teacher_profile'))
+
+    if user.role == Role.Admin:
+        return redirect(url_for('main.admin_profile'))
 
     return redirect(url_for('main.index'))
 

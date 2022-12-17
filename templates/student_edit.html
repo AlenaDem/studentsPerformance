@@ -1,14 +1,53 @@
 <form id="edit-form">
+  <fieldset>
     <button type="button" class="btn btn-primary" onclick="loadStudents()">Назад</button>
+
+    {% if user.id == 0 %}
+    <div class="form-group">
+      <label for="login-input">Логин</label>
+      <input type="text" class="form-control" name="login" id="login-input" value="{{ user.login }}">
+    </div>
+    <div class="form-group">
+      <label for="pass-input">Пароль</label>
+      <input type="password" class="form-control" name="password" id="pass-input">
+    </div>
+    {% endif %} 
 
     <div class="form-group">
       <label for="first-name">Имя</label>
-      <input type="text" class="form-control" name="first_name" id="first-name" value="{{ student.first_name }}">
+      <input type="text" class="form-control" name="first_name" id="first-name-input" value="{{ student.first_name }}">
     </div>
     <div class="form-group">
       <label for="last-name">Фамилия</label>
-      <input type="text" class="form-control" name="last_name" id="last-name" value="{{ student.last_name }}">
+      <input type="text" class="form-control" name="last_name" id="last-name-input" value="{{ student.last_name }}">
+    </div>
+    <div class="form-group">
+      <label for="patronymic-input">Отчество</label>
+      <input type="text" class="form-control" name="patronymic" id="patronymic-input" value="{{ student.patronymic }}">
+    </div>
+    <div class="form-group">
+      <label for="year-input">Год поступления</label>
+      <input type="number" class="form-control" name="year" id="year-input" value="{{ student.admission_date }}">
     </div>
 
-    <button type="button" class="btn btn-primary" id="ok-button" onclick="editStudent({{ student.id }})">ОК</button>
+    <div class="form-group">
+      <label for="group-select" class="form-label mt-4">Группа</label>
+      <select class="form-select" id="group-select">
+        {% for group in groups %}
+          {% if group['id'] == student.group_id %}
+            <option selected value="{{ group['id'] }}">{{ group['group_name'] }}</option>
+          {% else %}
+            <option value="{{ group['id'] }}">{{ group['group_name'] }}</option>
+          {% endif %} 
+        {% endfor %}
+      </select>
+    </div>
+
+    {% if student.id == 0 %}
+      <button type="button" class="btn btn-primary" id="ok-button" onclick="createStudent()">ОК</button>
+    {% else %}
+      <button type="button" class="btn btn-primary" id="ok-button" onclick="editStudent({{ student.id }})">ОК</button>
+    {% endif %} 
+
+  </fieldset>
 </form>

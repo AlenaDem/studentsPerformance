@@ -4,3 +4,9 @@ def valid_session(session):
         return False
     return True
 
+
+def valid_args(data, *args):
+    for arg_name in args:
+        if arg_name not in data:
+            return False
+    return True

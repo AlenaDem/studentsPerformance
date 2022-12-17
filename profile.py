@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, jsonify, request, session
-from teacher import Teacher
+from models.teacher import Teacher
 
 profile = Blueprint('profile', __name__)
 

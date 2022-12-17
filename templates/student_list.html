@@ -1,3 +1,4 @@
+<button type="button" id="create-btn" onclick="openStudentForCreate()">Создать</button>
 <table class="student-table table table-bordered">
     <thead>
       <tr>
@@ -14,7 +15,7 @@
         <td>{{ s['group'] }}</td>
         <td>{{ s['date'] }}</td>
         <td>
-            <button type="button" id="edit-{{ s['id'] }}" onclick="openStudent({{ s['id'] }})">Изменить</button>
+            <button type="button" id="edit-{{ s['id'] }}" onclick="openStudentForEdit({{ s['id'] }})">Изменить</button>
             <button type="button" id="delete-{{ s['id'] }}" onclick="deleteStudent({{ s['id'] }})">Удалить</button>
         </td>
         </tr>

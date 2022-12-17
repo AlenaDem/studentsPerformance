@@ -12,14 +12,30 @@ class Role(IntEnum):
 
 
 class User:
-    def __init__(self, id, login, password, role):
+    def __init__(self, id, login='', password='', role=None):
         self.id = id
         self.login = login
         self.password = password
         self.role = role
 
     @staticmethod
-    def get_user(login):
+    def get(id):
+        db = open_db()
+        try:
+            db.cursor.execute('SELECT * FROM users WHERE id = %s', (id,))
+            for record in db.cursor.fetchall():
+                return User(record['id'], record['login'], record['password'], record['role'])
+
+        except Exception as error:
+            print(error)
+
+        finally:
+            db.close()
+
+        return None
+
+    @staticmethod
+    def get_by_login(login):
         db = open_db()
         try:
             db.cursor.execute('SELECT * FROM users WHERE login = %s', (login,))

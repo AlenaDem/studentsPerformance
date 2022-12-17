@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session, redirect, url_for
 from grade import Grade
-from user import Role
+from models.user import Role
 from validators import valid_session
 
 main = Blueprint('main', __name__)
