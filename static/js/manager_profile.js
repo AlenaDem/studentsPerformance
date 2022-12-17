@@ -67,6 +67,23 @@ function openStudentForEdit(id) {
         });
 }
 
+function validateYear(inputID) {
+    const input = document.getElementById(inputID);
+    const validityState = input.validity;
+  
+    if (validityState.valueMissing) {
+      input.setCustomValidity('Пожалуйста, заполните год');
+    } else if (validityState.rangeUnderflow) {
+      input.setCustomValidity('Введите год от 2000');
+    } else if (validityState.rangeOverflow) {
+      input.setCustomValidity('Введите год до 2022');
+    } else {
+      input.setCustomValidity('');
+    }
+  
+    input.reportValidity();
+  }
+
 function editStudent(id) {
     let form = document.getElementById('edit-form')
     if (!form.checkValidity()) {
