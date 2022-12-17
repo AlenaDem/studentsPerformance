@@ -5,8 +5,8 @@
     <div class="form-group mt-4">
       <label for="name-input">Название</label>
       <input type="text" name="name" class="form-control" id="name-input" value="{{ item.speciality_name }}" 
-             placeholder="Введите название специальности" minlength="1" maxlength="64" required="" 
-             oninvalid="this.setCustomValidity('Пожалуйста, введите корректное название специальности')" oninput="setCustomValidity('')">
+             placeholder="Введите название специальности (буквы русского и английского алфавита, пробел)" minlength="1" maxlength="64" required="" pattern="^(?=[A-Za-zА-Яа-яЁё].*)[A-Za-zА-Яа-яЁё\s]+$"
+             oninvalid="validateText('name-input')">
     </div>
 
     {% if item.id == 0 %}

@@ -82,7 +82,22 @@ function validateYear(inputID) {
     }
   
     input.reportValidity();
-  }
+}
+
+function validateText(inputID) {
+    const input = document.getElementById(inputID);
+    const validityState = input.validity;
+  
+    if (validityState.valueMissing) {
+      input.setCustomValidity('Пожалуйста, заполните поле');
+    } else if (validityState.patternMismatch || validityState.rangeOverflow || validityState.rangeUnderflow || validityState.tooLong || validityState.tooShort || validityState.typeMismatch || validityState.badInput) {
+      input.setCustomValidity('Пожалуйста, введите корректное значение для поля');
+    } else {
+      input.setCustomValidity('');
+    }
+  
+    input.reportValidity();
+}
 
 function editStudent(id) {
     let form = document.getElementById('edit-form')
