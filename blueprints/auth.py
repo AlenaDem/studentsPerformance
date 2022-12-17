@@ -5,7 +5,6 @@ from validators import valid_session
 
 auth = Blueprint('auth', __name__)
 
-
 @auth.route('/login')
 def login():
     if valid_session(session):
@@ -31,13 +30,13 @@ def login_post():
     session["user_role"] = user.role
 
     if user.role == Role.Student:
-        return redirect(url_for('main.profile'))
+        return redirect(url_for('main.student_profile'))
 
     if user.role == Role.Teacher:
         return redirect(url_for('main.teacher_profile'))
 
     if user.role == Role.Admin:
-        return redirect(url_for('main.admin_profile'))
+        return redirect(url_for('main.manager_profile'))
 
     return redirect(url_for('main.index'))
 

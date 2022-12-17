@@ -1,8 +1,8 @@
 from flask import Flask, session
-from auth import auth as auth_blueprint
-from main import main as main_blueprint
-from profile import profile as profile_blueprint
-from manager_profile import manager_profile
+from blueprints.auth import auth as auth_blueprint
+from blueprints.main import main as main_blueprint
+from blueprints.teacher_profile import profile as profile_blueprint
+from blueprints.manager_profile import manager_profile
 
 
 def create_app():

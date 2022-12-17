@@ -1,12 +1,6 @@
 import psycopg2
 import psycopg2.extras
-
-hostname = 'localhost'
-database = 'testdb'
-username = 'postgres'
-pwd = 'Kak$delatKur$0vuyu???'
-port_id = '5432'
-
+from config import hostname, database, username, pwd, port_id
 
 class Database:
     def __init__(self):

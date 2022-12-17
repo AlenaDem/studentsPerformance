@@ -1,0 +1,37 @@
+<form id="edit-form">
+  <fieldset>
+    <button type="button" class="btn btn-primary" onclick="loadTeachers()">Назад</button>
+
+    {# user.id == 0 значит создание нового учителя, отображаем поля логин и пароль #}
+    {% if user.id == 0 %}
+    <div class="form-group">
+      <label for="login-input">Логин</label>
+      <input type="text" class="form-control" name="login" id="login-input" value="{{ user.login }}">
+    </div>
+    <div class="form-group">
+      <label for="pass-input">Пароль</label>
+      <input type="password" class="form-control" name="password" id="pass-input">
+    </div>
+    {% endif %} 
+
+    <div class="form-group">
+      <label for="first-name-input">Имя</label>
+      <input type="text" class="form-control" name="first_name" id="first-name-input" value="{{ teacher.first_name }}">
+    </div>
+    <div class="form-group">
+      <label for="last-name-input">Фамилия</label>
+      <input type="text" class="form-control" name="last_name" id="last-name-input" value="{{ teacher.last_name }}">
+    </div>
+    <div class="form-group">
+      <label for="patronymic-input">Отчество</label>
+      <input type="text" class="form-control" name="patronymic" id="patronymic-input" value="{{ teacher.patronymic }}">
+    </div>
+
+    {% if user.id == 0 %}
+      <button type="button" class="btn btn-primary" id="ok-button" onclick="createTeacher()">ОК</button>
+    {% else %}
+      <button type="button" class="btn btn-primary" id="ok-button" onclick="editTeacher({{ user.id }})">ОК</button>
+    {% endif %} 
+
+  </fieldset>
+</form>

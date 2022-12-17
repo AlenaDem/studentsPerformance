@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for
-from grade import Grade
+from models.grade import Grade
 from models.user import Role
 from validators import valid_session
 
@@ -11,8 +11,8 @@ def index():
     return render_template('index.html')
 
 
-@main.route('/profile')
-def profile():
+@main.route('/student_profile')
+def student_profile():
     if not valid_session(session):
         return redirect(url_for('auth.login'))
 
@@ -58,8 +58,8 @@ def teacher_profile():
 
     return render_template('teacher_profile.html')
 
-@main.route('/admin_profile', methods=['GET'])
-def admin_profile():
+@main.route('/manager_profile', methods=['GET'])
+def manager_profile():
     if not valid_session(session):
         return redirect(url_for('auth.login'))
 
@@ -71,4 +71,4 @@ def admin_profile():
 
     print('Admin opens profile:', user_id)
 
-    return render_template('admin_profile.html')
+    return render_template('manager_profile.html')

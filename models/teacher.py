@@ -1,12 +1,101 @@
 from db import open_db
+from models.user import Role
 
 
 class Teacher:
-    def __init__(self, id, first_name, last_name, patronymic):
+    def __init__(self, id, first_name='', last_name='', patronymic=''):
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
         self.patronymic = patronymic
+
+    @staticmethod
+    def get(id):
+        db = open_db()
+        try:
+            db.cursor.execute('SELECT * FROM teachers WHERE id = %s', (id,))
+            for record in db.cursor.fetchall():
+                return Teacher(record['id'],
+                               record['first_name'],
+                               record['last_name'],
+                               record['patronymic']
+                               )
+
+        except Exception as error:
+            print(error)
+
+        finally:
+            db.close()
+
+        return None
+
+    @staticmethod
+    def create(login, password, first_name, last_name, patronymic):
+        db = open_db()
+
+        try:
+            script = 'INSERT INTO users (login, password, role) VALUES (%s, %s, %s) RETURNING id'
+            values = (login, password, Role.Teacher)
+            db.cursor.execute(script, values)
+            user_id = db.cursor.fetchone()[0]
+
+            script = 'INSERT INTO teachers (id, last_name, first_name, patronymic) ' \
+                     'VALUES (%s, %s, %s, %s)'
+            values = (user_id, last_name, first_name, patronymic)
+            db.cursor.execute(script, values)
+
+            db.conn.commit()
+            return True
+
+        except Exception as error:
+            print(error)
+
+        finally:
+            db.close()
+
+        return False
+
+    @staticmethod
+    def update(id, first_name, last_name, patronymic):
+        db = open_db()
+        try:
+            script = 'UPDATE teachers SET first_name=%s, last_name=%s, patronymic=%s ' \
+                     'WHERE id=%s'
+            values = (first_name, last_name, patronymic, id)
+            db.cursor.execute(script, values)
+            db.conn.commit()
+            return True
+
+        except Exception as error:
+            print(error)
+
+        finally:
+            db.close()
+
+        return False
+
+    @staticmethod
+    def get_all():
+        db = open_db()
+        try:
+            db.cursor.execute('SELECT * FROM teachers')
+
+            items = []
+            for record in db.cursor.fetchall():
+                items.append(Teacher(record['id'],
+                                        record['first_name'],
+                                        record['last_name'],
+                                        record['patronymic']
+                                        ))
+            return items
+
+        except Exception as error:
+            print(error)
+
+        finally:
+            db.close()
+
+        return None
 
     @staticmethod
     def get_disciplines(teacher_id, academic_year, semester):

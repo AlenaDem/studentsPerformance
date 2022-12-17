@@ -3,7 +3,35 @@ function managerProfileInit() {
 };
 managerProfileInit();
 
+function hideStatus() {
+    let holder = document.getElementById("status-holder")
+    if (!holder)
+        return
+    holder.style.display = "none"
+}
+
+function setSuccess(msg) {
+    let holder = document.getElementById("status-holder")
+    if (!holder)
+        return
+    holder.innerHTML = '<div class="alert alert-success">\n<strong>Успешно!</strong> ' + msg + '\n</div>'
+    holder.style.display = "block"
+}
+
+function setError(msg) {
+    let holder = document.getElementById("status-holder")
+    if (!holder)
+        return
+    holder.innerHTML = '<div class="alert alert-warning">\n<strong>Ошибка!</strong> ' + msg + '\n</div>'
+    holder.style.display = "block"
+}
+
+//
+// Студенты
+//
 function loadStudents() {
+    hideStatus()
+
     let url = '/student_list'
     fetch(url)
         .then(function (response) {
@@ -65,7 +93,11 @@ function editStudent(id) {
             body: JSON.stringify(data)
         })
         .then(function (res) { 
-            console.log(res.status)
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
             loadStudents()
         })
 }
@@ -114,7 +146,11 @@ function createStudent() {
             body: JSON.stringify(data)
         })
         .then(function (res) { 
-            console.log(res.status)
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
             loadStudents()
         })
 }
@@ -127,5 +163,345 @@ function deleteStudent(id) {
         .then(function (response) {
             if (response.status == 200)
                 loadStudents()
+        })
+}
+
+
+//
+// Преподаватели
+//
+function loadTeachers() {
+    hideStatus()
+
+    let url = '/teacher_list'
+    fetch(url)
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+
+            $('.table').DataTable({
+                paging: false,
+                info: false,
+                "language": {
+                    "emptyTable": "Преподаватели не найдены",
+                    "search": "Поиск:",
+                    "zeroRecords": "Нет результатов, удовлетворяющих запросу",
+                }
+            });
+        });
+}
+
+function openTeacherForEdit(id) {
+    fetch("/edit_teacher_form/" + id,
+        {
+            method: "GET"
+        })
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+        });
+}
+
+function editTeacher(id) {
+    let form = document.getElementById('edit-form')
+    if (!form.checkValidity())
+        return
+
+    let fn = document.getElementById('first-name-input').value
+    let ln = document.getElementById('last-name-input').value
+    let patronymic = document.getElementById('patronymic-input').value
+
+    const data = {
+        id: id,
+        first_name: fn,
+        last_name: ln,
+        patronymic: patronymic,
+    }
+
+    fetch("/edit_teacher",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(function (res) { 
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
+            loadTeachers()
+        })
+}
+
+function openTeacherForCreate() {
+    fetch("/create_teacher_form",
+    {
+        method: "GET"
+    })
+    .then(function (response) {
+        return response.text();
+    })
+    .then(function (html) {
+        let view = document.getElementById("view")
+        view.innerHTML = html
+    });
+}
+
+function createTeacher() {
+    let form = document.getElementById('edit-form')
+    if (!form.checkValidity())
+        return
+
+    let fn = document.getElementById('first-name-input').value
+    let ln = document.getElementById('last-name-input').value
+    let patronymic = document.getElementById('patronymic-input').value
+
+    let login = document.getElementById('login-input').value
+    let password = document.getElementById('pass-input').value
+
+    const data = {
+        first_name: fn,
+        last_name: ln,
+        patronymic: patronymic,
+        login: login,
+        password: password
+    }
+
+    fetch("/create_teacher",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(function (res) { 
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
+            loadTeachers()
+        })
+}
+
+
+//
+// Специальности
+//
+function loadSpecialities() {
+    hideStatus()
+
+    let url = '/speciality_list'
+    fetch(url)
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+
+            $('.table').DataTable({
+                paging: false,
+                info: false,
+                "language": {
+                    "emptyTable": "Специальности не найдены",
+                    "search": "Поиск:",
+                    "zeroRecords": "Нет результатов, удовлетворяющих запросу",
+                }
+            });
+        });
+}
+
+function openSpecialityForEdit(id) {
+    fetch("/edit_speciality_form/" + id,
+        {
+            method: "GET"
+        })
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+        });
+}
+
+function editSpeciality(id) {
+    let form = document.getElementById('edit-form')
+    if (!form.checkValidity())
+        return
+
+    let name = document.getElementById('name-input').value
+
+    const data = {
+        id: id,
+        name: name
+    }
+
+    fetch("/edit_speciality",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(function (res) { 
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
+            loadSpecialities()
+        })
+}
+
+function openSpecialityForCreate() {
+    fetch("/create_speciality_form",
+    {
+        method: "GET"
+    })
+    .then(function (response) {
+        return response.text();
+    })
+    .then(function (html) {
+        let view = document.getElementById("view")
+        view.innerHTML = html
+    });
+}
+
+function createSpeciality() {
+    let form = document.getElementById('edit-form')
+    if (!form.checkValidity())
+        return
+
+    let name = document.getElementById('name-input').value
+
+    const data = {
+        name: name
+    }
+
+    fetch("/create_speciality",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(function (res) { 
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
+            loadSpecialities()
+        })
+}
+
+
+//
+// Дисциплины
+//
+function loadDisciplines() {
+    hideStatus()
+
+    let url = '/discipline_list'
+    fetch(url)
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+
+            $('.table').DataTable({
+                paging: false,
+                info: false,
+                "language": {
+                    "emptyTable": "Дисциплины не найдены",
+                    "search": "Поиск:",
+                    "zeroRecords": "Нет результатов, удовлетворяющих запросу",
+                }
+            });
+        });
+}
+
+function openDisciplineForEdit(id) {
+    fetch("/edit_discipline_form/" + id,
+        {
+            method: "GET"
+        })
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+        });
+}
+
+function editDiscipline(id) {
+    let form = document.getElementById('edit-form')
+    if (!form.checkValidity())
+        return
+
+    let name = document.getElementById('name-input').value
+
+    const data = {
+        id: id,
+        name: name
+    }
+
+    fetch("/edit_discipline",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(function (res) { 
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
+            loadDisciplines()
+        })
+}
+
+function openDisciplineForCreate() {
+    fetch("/create_discipline_form",
+    {
+        method: "GET"
+    })
+    .then(function (response) {
+        return response.text();
+    })
+    .then(function (html) {
+        let view = document.getElementById("view")
+        view.innerHTML = html
+    });
+}
+
+function createDiscipline() {
+    let form = document.getElementById('edit-form')
+    if (!form.checkValidity())
+        return
+
+    let name = document.getElementById('name-input').value
+
+    const data = {
+        name: name
+    }
+
+    fetch("/create_discipline",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(function (res) {
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
+            loadDisciplines()
         })
 }

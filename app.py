@@ -2,12 +2,8 @@ import psycopg2
 import psycopg2.extras
 from flask import Flask, render_template, url_for, request, redirect
 from datetime import datetime
+from config import hostname, database, username, pwd, port_id
 
-hostname = 'localhost'
-database = 'testdb'
-username = 'postgres'
-pwd = 'Kak$delatKur$0vuyu???'
-port_id = '5432'
 conn = None
 cur = None
 

@@ -1,0 +1,17 @@
+<form id="edit-form">
+  <fieldset>
+    <button type="button" class="btn btn-primary" onclick="loadSpecialities()">Назад</button>
+
+    <div class="form-group">
+      <label for="name-input">Название</label>
+      <input type="text" class="form-control" name="first_name" id="name-input" value="{{ item.speciality_name }}">
+    </div>
+
+    {% if item.id == 0 %}
+      <button type="button" class="btn btn-primary" id="ok-button" onclick="createSpeciality()">ОК</button>
+    {% else %}
+      <button type="button" class="btn btn-primary" id="ok-button" onclick="editSpeciality({{ item.id }})">ОК</button>
+    {% endif %} 
+
+  </fieldset>
+</form>

@@ -29,14 +29,6 @@ class Group:
         return None
 
     @staticmethod
-    def create(student):
-        pass
-
-    @staticmethod
-    def update(student):
-        pass
-
-    @staticmethod
     def get_all():
         db = open_db()
         try:
