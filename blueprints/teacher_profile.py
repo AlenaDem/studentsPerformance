@@ -149,7 +149,7 @@ def get_students_by_group():
     for k, *args in students:
         data[k] = ' '.join(args)
 
-    app.logger.info(f"Пользователь {user_id}:{username} запроси список студентов")
+    app.logger.info(f"Пользователь {user_id}:{username} запросил список студентов")
 
     return jsonify(data)
 

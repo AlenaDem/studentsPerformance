@@ -5,7 +5,7 @@
     <div class="form-group mt-4">
       <label for="name-input">Название</label>
       <input type="text" class="form-control" name="first_name" id="name-input" value="{{ item.discipline_name }}" 
-             placeholder="Введите название дисциплины (буквы русского и английского алфавита, пробел)" minlength="1" maxlength="64" required="" pattern="^(?=[A-Za-zА-Яа-яЁё].*)[A-Za-zА-Яа-яЁё\s]+$"
+             placeholder="Введите название дисциплины (буквы русского и английского алфавита, пробел)" minlength="1" maxlength="64" required="" pattern="^(?=[A-Za-zА-Яа-яЁё].*)[A-Za-zА-Яа-яЁё\s-]+$"
              oninvalid="validateText('name-input')">
     </div>
 

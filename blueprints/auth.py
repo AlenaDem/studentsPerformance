@@ -25,7 +25,6 @@ def login_post():
     login = request.form.get('login')
     password = request.form.get('password')
     password = hash_password(password)
-    print(password)
 
     user = User.get_by_login(login)
 
@@ -40,16 +39,7 @@ def login_post():
 
     app.logger.info(f"Пользователь '{user.login}' успешно вошел в систему")
 
-    if user.role == Role.Student:
-        return redirect(url_for('student_profile.profile'))
-
-    if user.role == Role.Teacher:
-        return redirect(url_for('teacher_profile.profile'))
-
-    if user.role == Role.Admin:
-        return redirect(url_for('manager_profile.profile'))
-
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.profile'))
 
 
 @auth.route('/logout', methods=['GET'])

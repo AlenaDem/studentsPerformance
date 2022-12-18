@@ -20,7 +20,6 @@
         <td>{{ s['date'] }}</td>
         <td>
             <button class="btn btn-primary" type="button" id="edit-{{ s['id'] }}" onclick="openStudentForEdit({{ s['id'] }})">Изменить</button>
-            <button class="btn btn-primary" type="button" id="delete-{{ s['id'] }}" onclick="deleteStudent({{ s['id'] }})">Удалить</button>
         </td>
         </tr>
     {% endfor %}

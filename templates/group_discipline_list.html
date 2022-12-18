@@ -3,12 +3,12 @@
 
 <h1>Дисциплины для группы {{ group_name }}</h1>
 
-<div class="row">
-  <button type="button" class="btn btn-primary col-2" onclick="loadGroups()">Назад</button>
-  <button class="btn btn-primary col-2" type="button" id="create-btn" onclick="openGroupDisciplineForCreate({{ group_id }})">Создать</button>
+<div class="row mt-4">
+  <button type="button" class="btn btn-primary col-1" id="back-btn" onclick="loadGroups()">Назад</button>
+  <button class="btn btn-primary col-1" type="button" id="create-btn" onclick="openGroupDisciplineForCreate({{ group_id }})">Создать</button>
 </div>
 
-<table class="group-table table table-bordered">
+<table class="group-table table table-bordered mt-4">
   <thead>
     <tr>
       <th scope="col">Дисциплина</th>

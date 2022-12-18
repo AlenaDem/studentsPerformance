@@ -5,7 +5,7 @@
     <div class="form-group mt-4">
       <label for="name-input">Название группы</label>
       <input type="text" name="name" class="form-control" id="name-input" value="{{ group.group_name }}" 
-             placeholder="Введите название группы (буквы русского алфавита, пробел)" minlength="1" maxlength="32" required="" pattern="^(?=[А-Яа-яЁё].*)[А-Яа-яЁё\s]+$"
+             placeholder="Введите название группы (буквы русского алфавита, пробел)" minlength="1" maxlength="32" required="" pattern="^(?=[А-Яа-яЁё].*)[0-9А-Яа-яЁё\s-]+$"
              oninvalid="validateText('name-input')">
 
     </div>
