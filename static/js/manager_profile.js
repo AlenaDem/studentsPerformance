@@ -80,8 +80,6 @@ function validateYear(inputID) {
     } else {
       input.setCustomValidity('');
     }
-  
-    input.reportValidity();
 }
 
 function validateText(inputID) {
@@ -95,8 +93,6 @@ function validateText(inputID) {
     } else {
       input.setCustomValidity('');
     }
-  
-    input.reportValidity();
 }
 
 function editStudent(id) {
@@ -676,5 +672,102 @@ function createGroup() {
                 res.text().then(msg => setError(msg))
 
             loadGroups()
+        })
+}
+
+
+//
+// Дисциплины группы
+//
+function loadGroupDisciplines(groupId) {
+    hideStatus()
+
+    let url = '/group_discipline_list/' + groupId
+    fetch(url)
+        .then(function (response) {
+            if (response.ok) {
+                response.text().then(
+                    function (html) {
+                        let view = document.getElementById("view")
+                        view.innerHTML = html
+            
+                        $('.table').DataTable({
+                            paging: false,
+                            info: false,
+                            "language": {
+                                "emptyTable": "Дисциплины для группы не найдены",
+                                "search": "Поиск:",
+                                "zeroRecords": "Нет результатов, удовлетворяющих запросу",
+                            }
+                        });
+                    }
+                    )
+            }
+            else {
+                response.text().then(msg => setError(msg))
+            }
+        });
+}
+
+function openGroupDisciplineForCreate(groupId) {
+    fetch("/create_group_discipline_form/" + groupId,
+        {
+            method: "GET"
+        })
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            let view = document.getElementById("view")
+            view.innerHTML = html
+        });
+}
+
+function createGroupDiscipline(groupId) {
+    let form = document.getElementById('edit-form')
+    if (!form.checkValidity()) {
+        form.reportValidity()
+        return
+    }
+
+    let teacherId = document.getElementById('teacher-select').value
+    let disciplineId = document.getElementById('discipline-select').value
+    let semester = document.getElementById('semester-select').value
+    let year = document.getElementById('year-input').value
+
+    const data = {
+        year: year,
+        semester: semester,
+        teacher_id: teacherId,
+        discipline_id: disciplineId,
+    }
+
+    fetch("/create_group_discipline/" + groupId,
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(function (res) {
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
+            loadGroupDisciplines(groupId)
+        })
+}
+
+function deleteGroupDiscipline(groupId, groupDisciplineId) {
+    fetch("/delete_group_discipline/" + groupDisciplineId,
+        {
+            method: "DELETE"
+        })
+        .then(function (res) {
+            if (res.ok)
+                res.text().then(msg => setSuccess(msg))
+            else
+                res.text().then(msg => setError(msg))
+
+            loadGroupDisciplines(groupId)
         })
 }

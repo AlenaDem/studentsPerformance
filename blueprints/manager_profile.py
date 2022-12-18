@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, request, session, url_for, redirec
 from helpers import hash_password
 from models.discipline import Discipline
 from models.group import Group
+from models.group_discipline import GroupDiscipline
 from models.speciality import Speciality
 from models.student import Student
 from models.teacher import Teacher
@@ -550,3 +551,119 @@ def create_group():
         return 'Не удалось создать группу', 500
 
     return 'Группа создана', 200
+
+
+######################### group discipline #################################
+
+@manager_profile.route('/group_discipline_list/<group_id>', methods=['GET'])
+def group_discipline_list(group_id):
+    if not valid_session(session):
+        return redirect(url_for('auth.login'))
+
+    user_id = session['user_id']
+    user_role = session['user_role']
+    if user_role != Role.Admin:
+        return redirect(url_for('main.index'))
+
+    group = Group.get(group_id)
+    if group is None:
+        return 'Группа не найдена', 404
+
+    items = GroupDiscipline.get_by_group_id(group_id)
+    data = []
+    for item in items:
+        discipline = Discipline.get(item.discipline_id)
+        discipline_name = "-" if discipline is None else discipline.discipline_name
+
+        teacher = Teacher.get(item.teacher_id)
+        teacher_name = "-" if teacher is None else ' '.join((teacher.last_name, teacher.first_name, teacher.patronymic))
+
+        data.append({'discipline_name': discipline_name,
+                     'teacher_name': teacher_name,
+                     'year': item.academic_year,
+                     'semester': item.semester,
+                     'id': item.id
+                     })
+
+    return render_template('group_discipline_list.html', group=group, items=data)
+
+
+@manager_profile.route('/create_group_discipline_form/<group_id>', methods=['GET'])
+def create_group_discipline_form(group_id):
+    if not valid_session(session):
+        return redirect(url_for('auth.login'))
+
+    user_id = session['user_id']
+    user_role = session['user_role']
+    if user_role != Role.Admin:
+        return 'Недостаточно прав', 403
+
+    group = Group.get(group_id)
+    if group is None:
+        return 'Группа не найдена', 404
+
+    discipline_list = Discipline.get_all()
+    if discipline_list is None or len(discipline_list) == 0:
+        return 'Специальности не найдены', 404
+
+    teacher_list = Teacher.get_all()
+    if teacher_list is None or len(teacher_list) == 0:
+        return 'Специальности не найдены', 404
+
+    empty_group_discipline = GroupDiscipline(0)
+    empty_group_discipline.academic_year = 2022
+    empty_group_discipline.semester = 1
+    empty_group_discipline.discipline_id = discipline_list[0].id
+    empty_group_discipline.teacher_id = teacher_list[0].id
+    empty_group_discipline.group_id = group_id
+
+    return render_template('group_discipline_edit.html',
+                           group_discipline=empty_group_discipline,
+                           teachers=teacher_list,
+                           disciplines=discipline_list)
+
+
+@manager_profile.route('/create_group_discipline/<group_id>', methods=['POST'])
+def create_group_discipline(group_id):
+    if not valid_session(session):
+        return redirect(url_for('auth.login'))
+
+    user_role = session['user_role']
+    if user_role != Role.Admin:
+        return 'Недостаточно прав', 403
+
+    group = Group.get(group_id)
+    if group is None:
+        return 'Группа не найдена', 404
+
+    data = request.get_json(force=True)
+    if not valid_args(data, 'year', 'semester', 'teacher_id', 'discipline_id'):
+        return 'Некорректные данные', 500
+
+    ok = GroupDiscipline.create(academic_year=data['year'],
+                                semester=data['semester'],
+                                teacher_id=data['teacher_id'],
+                                discipline_id=data['discipline_id'],
+                                group_id=group_id
+                                )
+
+    if not ok:
+        return 'Не удалось создать дисциплину для группы', 500
+
+    return 'Дисциплина для группы создана', 200
+
+
+@manager_profile.route('/delete_group_discipline/<id>', methods=['DELETE'])
+def delete_group_discipline(id):
+    if not valid_session(session):
+        return redirect(url_for('auth.login'))
+
+    user_id = session['user_id']
+    user_role = session['user_role']
+    if user_role != Role.Admin:
+        return 'Недостаточно прав', 403
+
+    if not GroupDiscipline.delete(id):
+        return 'Не удалось удалить дисциплину у группы', 500
+
+    return 'Дисциплина группы удалена', 200

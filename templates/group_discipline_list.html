@@ -1,0 +1,43 @@
+{% set group_id = group.id %}
+{% set group_name = group.group_name %}
+
+<h1>Дисциплины для группы {{ group_name }}</h1>
+
+<div class="row">
+  <button type="button" class="btn btn-primary col-2" onclick="loadGroups()">Назад</button>
+  <button class="btn btn-primary col-2" type="button" id="create-btn" onclick="openGroupDisciplineForCreate({{ group_id }})">Создать</button>
+</div>
+
+<table class="group-table table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Дисциплина</th>
+      <th scope="col">Год</th>
+      <th scope="col">Семестр</th>
+      <th scope="col">Преподаватель</th>
+      <th scope="col">Редактирование</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for item in items %}
+    {% set group_discipline_id = item['id'] %}
+    {% set discipline_name = item['discipline_name'] %}
+    {% set year = item['year'] %}
+    {% set semester = item['semester'] %}
+    {% set teacher_name = item['teacher_name'] %}
+
+    <tr>
+      <td>{{ discipline_name }}</td>
+      <td>{{ year }}</td>
+      <td>{{ semester }}</td>
+      <td>{{ teacher_name }}</td>
+      <td>
+        <button class="btn btn-primary" type="button" id="edit-{{ group_discipline_id }}"
+          onclick="deleteGroupDiscipline({{ group_id }}, {{ group_discipline_id }})">Удалить</button>
+      </td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>

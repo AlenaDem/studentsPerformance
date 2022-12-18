@@ -13,15 +13,25 @@
       </tr>
     </thead>
     <tbody>
+
     {% for item in items %}
-        <tr>
-        <td>{{ item['name'] }}</td>
-        <td>{{ item['speciality'] }}</td>
-        <td>{{ item['course'] }}</td>
+
+      {% set id = item['id'] %}
+      {% set name = item['name'] %}
+      {% set speciality = item['speciality'] %}
+      {% set course = item['course'] %}
+
+      <tr>
+        <td>{{ name }}</td>
+        <td>{{ speciality }}</td>
+        <td>{{ course }}</td>
         <td>
-            <button class="btn btn-primary" type="button" id="edit-{{ item['id'] }}" onclick="openGroupForEdit({{ item['id'] }})">Изменить</button>
+            <button class="btn btn-primary" type="button" id="edit-{{ id }}" onclick="openGroupForEdit({{ id }})">Изменить</button>
+            <button class="btn btn-primary" type="button" id="disciplines-{{ id }}" onclick="loadGroupDisciplines({{ id }})">Дисциплины</button>
         </td>
-        </tr>
+      </tr>
+
     {% endfor %}
+
     </tbody>
   </table>

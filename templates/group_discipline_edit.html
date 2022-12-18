@@ -1,0 +1,52 @@
+
+{% set group_id = group_discipline.group_id %}
+{% set year = group_discipline.academic_year %}
+
+
+<form id="edit-form" class="col-10">
+  <fieldset>
+    <button type="button" class="btn btn-primary mb-4 col-2" onclick="loadGroupDisciplines({{ group_id }})">Назад</button>
+
+    <div class="form-group mt-4">
+      <label for="year-input">Год</label>
+      <input type="number" class="form-control" name="year" id="year-input" value="{{ year }}"
+             placeholder="Введите год" 
+             value="2020" min="2000" max="2022" required="" 
+             oninvalid="validateYear('year-input')">
+    </div>
+
+    <div class="form-group">
+      <label for="semester-select" class="form-label mt-4">Семестр</label>
+      <select class="form-select" id="semester-select">
+          <option value="1">1</option>
+          <option value="2">2</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="discipline-select" class="form-label mt-4">Дисциплина</label>
+      <select class="form-select" id="discipline-select">
+
+        {% for d in disciplines %}
+            <option value="{{ d.id }}">{{ d.discipline_name }}</option>
+        {% endfor %}
+
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="teacher-select" class="form-label mt-4">Преподаватель</label>
+      <select class="form-select" id="teacher-select">
+
+        {% for t in teachers %}
+            {% set full_name = t.last_name + ' ' + t.first_name + ' ' + t.patronymic %}
+            <option value="{{ t.id }}">{{ full_name }}</option>
+        {% endfor %}
+
+      </select>
+    </div>
+
+    <button type="button" class="btn btn-primary mt-4 col-2" id="ok-button" onclick="createGroupDiscipline({{ group_id }})">ОК</button>
+
+  </fieldset>
+</form>
