@@ -1,4 +1,9 @@
 
+const groupGradeMode = {
+    GRADES: 0,
+    UNDERACHIEVING: 1
+}
+
 const profile_state = {
     year: 2020,
     semester: 1,
@@ -6,6 +11,7 @@ const profile_state = {
     groupId: -1,
     studentId: -1,
     grade: -1,
+    mode: groupGradeMode.GRADES
 }
 
 function init() {
@@ -14,8 +20,39 @@ function init() {
 
     document.getElementById("select-semester").addEventListener("change", hideAll);
     document.getElementById("group-grades").style.display = "none";
+
+    setGroupGradesMode(groupGradeMode.GRADES)
+    setGradesBlockEnabled(false)
 };
 init();
+
+function setGroupGradesMode(mode) {
+    if (mode == groupGradeMode.UNDERACHIEVING) {
+        profile_state.mode = mode
+        document.getElementById("group-grades-block").style.display = "none";
+        document.getElementById("underachieving-block").style.display = "block";
+    }
+    else if (mode == groupGradeMode.GRADES) {
+        profile_state.mode = mode
+        document.getElementById("group-grades-block").style.display = "block";
+        document.getElementById("underachieving-block").style.display = "none";
+    }
+}
+
+function setGradesBlockEnabled(enable) {
+    if (enable)
+        document.getElementById("group-grades").style.display = "block";
+    else
+        document.getElementById("group-grades").style.display = "none";
+}
+
+function showUnderachievingStudents() {
+    setGroupGradesMode(groupGradeMode.UNDERACHIEVING)
+}
+
+function showGrades() {
+    setGroupGradesMode(groupGradeMode.GRADES)
+}
 
 function hideAll() {
     document.getElementById("discipline-form").style.display = "none";
@@ -38,8 +75,24 @@ function validateYear(inputID) {
     } else {
       input.setCustomValidity('');
     }
+  }
+
+  function validateGrade(inputID) {
+    const input = document.getElementById(inputID);
+    const validityState = input.validity;
   
-    input.reportValidity();
+    if (validityState.valueMissing) {
+      input.setCustomValidity('Пожалуйста, заполните поле');
+    } else if (validityState.rangeUnderflow) {
+      input.setCustomValidity('Введите значение от 1');
+    } else if (validityState.rangeOverflow) {
+      input.setCustomValidity('Введите год до 5');
+    } else if (validityState.stepMismatch) {
+        input.setCustomValidity('Максимально доступная точность 0.01');
+    } 
+    else {
+      input.setCustomValidity('');
+    }
   }
 
 function dateSelected() {
@@ -92,14 +145,14 @@ function fillDisciplines(disciplines) {
 
 function disciplineSelected() {
     document.getElementById("group-grades").style.display = "none";
+    document.getElementById("student-form").style.display = "none";
+    document.getElementById("grade-form").style.display = "none";
 
     let select = document.getElementById("discipline-select");
     let selectedId = select.options[select.options.selectedIndex].id;
 
     if (selectedId == -1) {
         document.getElementById("group-form").style.display = "none";
-        document.getElementById("student-form").style.display = "none";
-        document.getElementById("grade-form").style.display = "none";
         return
     }
 
@@ -127,18 +180,20 @@ function fillGroups(groups) {
 }
 
 function groupSelected() {
+    document.getElementById("grade-form").style.display = "none";
+    document.getElementById("group-grades").style.display = "none";
+
     let select = document.getElementById("group-select");
     let selectedId = select.options[select.options.selectedIndex].id;
 
     if (selectedId == -1) {
         document.getElementById("student-form").style.display = "none";
-        document.getElementById("grade-form").style.display = "none";
-        document.getElementById("group-grades").style.display = "none";
         return
     }
 
     profile_state.groupId = selectedId;
     loadGroupGrades();
+    loadUnderachievingStudents();
 
     url = '/group-students?' + new URLSearchParams({
         group_id: profile_state.groupId
@@ -147,6 +202,32 @@ function groupSelected() {
         .then(function (response) {
             return response.json();
         }).then(fillStudents);
+}
+
+function loadUnderachievingStudents() {
+    let form = document.getElementById('underachieving-form')
+    if (!form.checkValidity()) {
+        form.reportValidity()
+        return
+    }
+
+    let grade = document.getElementById('grade-input').value
+    let url = '/load_underachieving_students?' + new URLSearchParams({
+        group_id: profile_state.groupId,
+        grade: grade,
+        discipline_id: profile_state.disciplineId,
+        year: profile_state.year,
+        semester: profile_state.semester
+    })
+
+    fetch(url)
+        .then(function (response) {
+            return response.text();
+        }).then(function (data) {
+            let gradesBlock = document.getElementById("underachieving-content")
+            gradesBlock.innerHTML = data
+            setGradesBlockEnabled(true);
+        });
 }
 
 function loadGroupGrades() {
@@ -161,9 +242,9 @@ function loadGroupGrades() {
         .then(function (response) {
             return response.text();
         }).then(function (data) {
-            let gradesBlock = document.getElementById("group-grades")
+            let gradesBlock = document.getElementById("group-grades-block")
             gradesBlock.innerHTML = data
-            gradesBlock.style.display = "block";
+            setGradesBlockEnabled(true);
         });
 }
 
@@ -204,5 +285,6 @@ function addGrade() {
         .then(function (res) { return res.json(); })
         .then(function (data) {
             loadGroupGrades();
+            loadUnderachievingStudents();
         })
 }

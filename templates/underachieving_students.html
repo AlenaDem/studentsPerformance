@@ -1,0 +1,19 @@
+
+<table class="underachieving-table table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Имя</th>
+        <th scope="col">Средняя оценка</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    {% for d in data %}
+        <tr>
+        <td>{{ d['name'] }}</td>
+        <td>{{ d['avg'] }}</td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+  </table>

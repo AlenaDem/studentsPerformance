@@ -6,74 +6,104 @@
 
 {% block body %}
 <div class="teacher-profile d-flex justify-content-start">
-    <div class="container col-4 set-grade-container">
+  <div class="container col-4 set-grade-container">
     <h1>Поставить оценку</h1>
     <form method="POST" class="col-11" id="edit-form">
-        <fieldset>
-            <div class="grade-date">
-              <div class="form-group col-4">
-                  <div class="form-group">
-                      <label for="number" class="col-form-label mt-4" for="input-year">Год</label>
-                      <input type="number" class="form-control" placeholder="Введите год" id="input-year" 
-                             placeholder="Введите год" 
-                             value="2022" min="2000" max="2022" required="" 
-                             oninvalid="validateYear('input-year')">
-                  </div>
-              </div>
-
-              <div class="form-group col-4">
-                  <label for="select-semester" class="form-label mt-4">Семестр</label>
-                  <select class="form-select" id="select-semester">
-                    <option>1</option>
-                    <option>2</option>
-                  </select>
-              </div>
-
-              <button id="year-selected-btn" type="button" class="login-btn btn btn-primary">Далее</button>
+      <fieldset>
+        <div class="grade-date">
+          <div class="form-group col-4">
+            <div class="form-group">
+              <label for="number" class="col-form-label mt-4" for="input-year">Год</label>
+              <input type="number" class="form-control" placeholder="Введите год" id="input-year"
+                placeholder="Введите год" value="2022" min="2000" max="2022" required=""
+                oninvalid="validateYear('input-year')">
             </div>
-
-          <div class="form-group" id="discipline-form">
-              <label for="discipline-select" class="form-label mt-4">Выбор дисциплины</label>
-              <select class="form-select" id="discipline-select">
-                <option>1</option>
-              </select>
           </div>
 
-          <div class="form-group" id="group-form">
-              <label for="group-select" class="form-label mt-4">Выбор группы</label>
-              <select class="form-select" id="group-select">
-                <option>1</option>
-              </select>
+          <div class="form-group col-4">
+            <label for="select-semester" class="form-label mt-4">Семестр</label>
+            <select class="form-select" id="select-semester">
+              <option>1</option>
+              <option>2</option>
+            </select>
           </div>
 
-          <div class="form-group" id="student-form">
-              <label for="student-select" class="form-label mt-4">Выбор студента</label>
-              <select class="form-select" id="student-select">
-                <option>1</option>
-              </select>
-          </div>
+          <button id="year-selected-btn" type="button" class="login-btn btn btn-primary">Далее</button>
+        </div>
 
-              <div class="form-group" id="grade-form">
-                  <label for="grade-select" class="form-label mt-4">Оценка</label>
-                  <select class="form-select" id="grade-select">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </select>
+        <div class="form-group" id="discipline-form">
+          <label for="discipline-select" class="form-label mt-4">Выбор дисциплины</label>
+          <select class="form-select" id="discipline-select">
+            <option>1</option>
+          </select>
+        </div>
 
-                  <button id="grade-btn" type="button" class="login-btn btn btn-primary btn-lg col-12">Поставить оценку</button>
+        <div class="form-group" id="group-form">
+          <label for="group-select" class="form-label mt-4">Выбор группы</label>
+          <select class="form-select" id="group-select">
+            <option>1</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="student-form">
+          <label for="student-select" class="form-label mt-4">Выбор студента</label>
+          <select class="form-select" id="student-select">
+            <option>1</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="grade-form">
+          <label for="grade-select" class="form-label mt-4">Оценка</label>
+          <select class="form-select" id="grade-select">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+
+          <button id="grade-btn" type="button" class="login-btn btn btn-primary btn-lg col-12">Поставить оценку</button>
+        </div>
+
+
+      </fieldset>
+    </form>
+  </div>
+
+  <div class="col-8">
+
+
+    <div class="container col-12" id="group-grades">
+      <nav class="nav d-flex flex-row">
+        <a class="nav-link" href="#" onclick="showGrades()">Оценки по группе</a>
+        <a class="nav-link" href="#" onclick="showUnderachievingStudents()">Неуспевающие студенты</a>
+      </nav>
+
+      <div id="group-grades-block">
+        <h1>Оценки группы</h1>
+      </div>
+
+      <div id="underachieving-block">
+        <form id="underachieving-form" class="col-10 mt-4">
+          <fieldset>
+            <div class="grade-date col-5">
+              <div class="form-group">
+                <label for="grade-input">Порог средней оценки</label>
+                <input type="number" class="form-control" name="grade" value="3.5" id="grade-input"
+                  placeholder="Введите оценку" min="1" max="5" step="0.01" required=""
+                  oninvalid="validateGrade('grade-input')">
               </div>
+              <button type="button" class="btn btn-primary col-4" id="ok-button" onclick="loadUnderachievingStudents()">Обновить</button>
+            </div>
+          </fieldset>
+        </form>
+        <div id="underachieving-content" class="mt-4">
+        </div>
+      </div>
 
-
-        </fieldset>
-      </form>
     </div>
+  </div>
 
-    <div class="container col-8" id="group-grades">
-        <h1>Группа</h1>
-    </div>
 
 </div>
 

@@ -204,3 +204,27 @@ class Teacher:
             db.close()
 
         return None
+
+    @staticmethod
+    def get_underachieving_students(academic_year, semester, discipline_id, group_id, grade):
+        db = open_db()
+        try:
+            db.cursor.execute('SELECT students.last_name, students.first_name, students.patronymic, A.avg FROM '
+                              '(SELECT students.id, avg(grades.grade) FROM grades '
+                              'JOIN students ON students.id = grades.student_id '
+                              'WHERE grades.academic_year = %s AND grades.semester = %s '
+                              'AND grades.discipline_id = %s AND students.group_id = %s'
+                              'GROUP BY students.id HAVING AVG(grades.grade) < %s) '
+                              'AS A JOIN students ON A.id = students.id',
+                              (academic_year, semester, discipline_id, group_id, grade))
+
+            students_list = db.cursor.fetchall()
+            return students_list
+
+        except Exception as error:
+            print(error)
+
+        finally:
+            db.close()
+
+        return None

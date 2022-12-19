@@ -90,6 +90,40 @@ def get_groups_by_discipline():
     return jsonify(data)
 
 
+@teacher_profile.route('/load_underachieving_students', methods=['GET'])
+def load_underachieving_students():
+    log_request_info(request)
+
+    if not valid_session(session):
+        return redirect(url_for('auth.login'))
+
+    args = request.args
+    user_id = session['user_id']
+    user_role = session['user_role']
+    username = session['username']
+    if user_role != Role.Teacher:
+        return redirect(url_for('main.index'))
+
+    if not valid_args(args, 'year', 'semester', 'discipline_id', 'group_id', 'grade'):
+        return 'Некорректные данные', 500
+
+    discipline_id = args['discipline_id']
+    group_id = args['group_id']
+    academic_year = args['year']
+    semester = args['semester']
+    grade = args['grade']
+
+    group_grades = Teacher.get_underachieving_students(academic_year, semester, discipline_id, group_id, grade)
+
+    data = []
+    for *args, avg in group_grades:
+        full_name = ' '.join(args)
+        data.append({'name': full_name, 'avg': str(avg)[:4]})
+
+    app.logger.info(f"Пользователь {user_id}:{username} запросил неуспевающих студентов")
+    return render_template('underachieving_students.html', data=data)
+
+
 @teacher_profile.route('/load_group_grades', methods=['GET'])
 def load_group_grades():
     log_request_info(request)
