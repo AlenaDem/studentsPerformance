@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Вход
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-12">
+      <div class="jumbotron text-center p-4">
+        <h2>Введите одноразовый пароль с вашего устройства</h2>
+      </div>
+    </div>
+
+    {% if need_register %}
+
+    <div class="col-lg-5">
+      <form>
+        <div>
+          <h5>Вы первый раз вошли в учетную запись, завершите регистрацию.</h5>
+          <ul>
+            <li>Загрузите <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&gl=US" target="_blank">Google Authenticator</a> на ваш мобильный телефон.</li>
+            <li>Создайте новый аккаунт, отсканировав QR-код.</li>
+            <li>Войдите в учетную запись с помощью одноразового пароля.</li>
+          </ul>
+        </div>
+        <p><img id="qrcode" src="{{ url_for('auth.qrcode2fa') }}"></p>
+      </form>
+    </div>
+
+    {% endif %} 
+
+    <div class="col-lg-7">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }}" role="alert">
+        {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      <form method="POST">
+        <div class="form-group">
+          <label for="otp">Одноразовый пароль</label>
+          <input type="hidden" name="secret" value="{{ secret }}" required>
+          <input type="number" class="form-control" id="otp" name="otp" required>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Войти</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

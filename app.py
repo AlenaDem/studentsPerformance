@@ -100,6 +100,11 @@ def init_db():
                                         discipline_id INTEGER  REFERENCES disciplines(id))'''
                 cur.execute(create_table)
 
+                create_table = ''' CREATE TABLE IF NOT EXISTS otp (
+                                        id INTEGER PRIMARY KEY REFERENCES users(id),
+                                        secret VARCHAR(64) NOT NULL)'''
+                cur.execute(create_table)
+
                 insert_script = 'INSERT INTO specialities (speciality_name) VALUES (%s)'
                 insert_values = [('ИБС',), ('ИФБС',)]
                 for record in insert_values:

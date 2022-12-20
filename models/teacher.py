@@ -147,8 +147,10 @@ class Teacher:
     def get_students(group_id):
         db = open_db()
         try:
-            db.cursor.execute('SELECT id, last_name, first_name, patronymic FROM students WHERE group_id = %s',
-                              (group_id,))
+
+            db.cursor.execute(f'SELECT id, last_name, first_name, patronymic FROM students WHERE group_id = {group_id}')
+            # db.cursor.execute('SELECT id, last_name, first_name, patronymic FROM students WHERE group_id = %s',
+            #                   (group_id,))
 
             students_list = db.cursor.fetchall()
             return students_list
